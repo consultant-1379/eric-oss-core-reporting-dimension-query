@@ -1,0 +1,545 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+ ~ COPYRIGHT Ericsson 2023
+ ~
+ ~
+ ~
+ ~ The copyright to the computer program(s) herein is the property of
+ ~
+ ~ Ericsson Inc. The programs may be used and/or copied only with written
+ ~
+ ~ permission from Ericsson Inc. or in accordance with the terms and
+ ~
+ ~ conditions stipulated in the agreement/contract under which the
+ ~
+ ~ program(s) have been supplied.
+ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>3.1.8</version>
+        <relativePath/>
+    </parent>
+    <groupId>com.ericsson.oss.air</groupId>
+    <artifactId>eric-oss-core-reporting-dimension-query</artifactId>
+    <!--    When working with JARs locally, make sure to change the version based on VERSION_PREFIX-->
+    <!--    Use this command => mvn versions:set -DnewVersion=<VERSION_PREFIX value>-SNAPSHOT -DprocessAllModules -DgenerateBackupPoms=false -->
+    <version>2.103.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>eric-oss-core-reporting-dimension-query</name>
+    <modules>
+        <module>eric-oss-core-reporting-dimension-query-cts-stubs</module>
+        <module>eric-oss-core-reporting-dimension-query-main</module>
+        <module>eric-oss-core-reporting-dimension-query-security</module>
+    </modules>
+    <scm>
+        <developerConnection>${ericsson.scm.url}</developerConnection>
+        <connection>${ericsson.scm.url}</connection>
+        <tag>HEAD</tag>
+    </scm>
+    <properties>
+        <!-- Set compiler Java version, MUST match the Dockerfile JDK version -->
+        <maven.compiler.release>17</maven.compiler.release>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <version.openjdk>17</version.openjdk>
+        <ericsson.scm.url>
+            scm:git:[fetch=]ssh://gerrit-gamma.gic.ericsson.se:29418/OSS/com.ericsson.oss.air/eric-oss-core-reporting-dimension-query[push=]ssh://gerrit-gamma.gic.ericsson.se:29418/OSS/com.ericsson.oss.air/eric-oss-core-reporting-dimension-query
+        </ericsson.scm.url>
+        <!-- 3PP Versions -->
+        <version.jackson-databind-nullable>0.2.6</version.jackson-databind-nullable>
+        <version.snakeyaml>2.1</version.snakeyaml>
+        <!-- Ericsson Dependency Versions -->
+        <version.eric-common-logging>2.0.3</version.eric-common-logging>
+        <adp-chassis-spring-boot-bom.version>2.1.1</adp-chassis-spring-boot-bom.version>
+        <!-- Build Dependencies -->
+        <version.openapi-generator-maven-plugin>6.6.0</version.openapi-generator-maven-plugin>
+        <version.maven-sortpom-plugin>2.13.1</version.maven-sortpom-plugin>
+        <version.maven-scm-provider-gitexe>1.8.1</version.maven-scm-provider-gitexe>
+        <maven-checkstyle-plugin.version>3.3.0</maven-checkstyle-plugin.version>
+        <maven-pmd-plugin.version>3.19.0</maven-pmd-plugin.version>
+        <checkstyle.version>10.6.0</checkstyle.version>
+        <license-maven-plugin.version>4.2.rc3</license-maven-plugin.version>
+        <maven-javadoc-plugin.version>3.4.1</maven-javadoc-plugin.version>
+        <surefire-report-plugin.version>3.0.0-M7</surefire-report-plugin.version>
+        <spotbugs-maven-plugin.version>4.7.3.0</spotbugs-maven-plugin.version>
+        <!-- Spring Dependencies -->
+        <spring-cloud-contract-plugin.version>4.0.3</spring-cloud-contract-plugin.version>
+        <version.spring-cloud>2022.0.3</version.spring-cloud>
+        <springdoc-openapi-starter.version>2.1.0</springdoc-openapi-starter.version>
+        <!-- Test Dependencies -->
+        <depgraph-maven-plugin.version>4.0.2</depgraph-maven-plugin.version>
+        <version.license-maven-plugin>4.2</version.license-maven-plugin>
+        <version.sonar-maven-plugin>3.8.0.2131</version.sonar-maven-plugin>
+        <sonar.coverage.exclusions>
+            **/*Representation.java,
+            **/*Constants.java,
+            **/*Stub.java,
+            **/*Exception.java,
+            **/*Configuration.java,
+            **/*Properties.java,
+            **/com/ericsson/oss/air/cardq/model/**/*
+        </sonar.coverage.exclusions>
+        <!-- JaCoCo plugin for Java Code Coverage -->
+        <version.jacoco-maven.plugin>0.8.10</version.jacoco-maven.plugin>
+        <!-- Minimum ratio or percentage of instructions to be covered, used by
+                JaCoCo plugin. Industry standard is 0.8 or 80% which allows at least 80%
+                of the code to be covered by the test cases. -->
+        <jacoco-maven-plugin.coveredratio.minimum>0.90</jacoco-maven-plugin.coveredratio.minimum>
+        <!-- Options -->
+        <checkstyle-failOnViolation>true</checkstyle-failOnViolation>
+        <skipLicenseCheck>false</skipLicenseCheck>
+        <!-- Allow eric-oss-core-reporting-dimension-query-cts-stubs module to install without artifacts
+        https://maven.apache.org/plugins/maven-install-plugin/install-mojo.html#allowIncompleteProjects -->
+        <allowIncompleteProjects>true</allowIncompleteProjects>
+        <skipCloudContractTests>false</skipCloudContractTests>
+
+        <!-- Remediates CVE-2023-51074 => Upgrades com.jayway.jsonpath from 2.8.0 to 2.9.0  -->
+        <json-path.version>2.9.0</json-path.version>
+        <!-- Remediates CVE-2023-41329 => Upgrades wiremock-jre8-standalone from 2.35.0 to 2.35.1  -->
+        <version.wiremock-jre8-standalone>2.35.1</version.wiremock-jre8-standalone>
+        <!-- Remediates CVE-2023-2976 => Upgrades spring-cloud-contract-shade from 4.0.3 to 4.0.5  -->
+        <version.spring-cloud-contract-shade>4.0.5</version.spring-cloud-contract-shade>
+        <!-- Remediates CVE-2024-22243, CVE-2024-22259, CVE-2024-22262 => Upgrades spring-framework (also spring-web) from 6.0.16 to 6.0.19 -->
+        <spring-framework.version>6.0.19</spring-framework.version>
+        <!-- Remediates CVE-2024-22234, CVE-2024-22257 =>< Upgrades spring-security-core from 6.1.6 to 6.1.8 -->
+        <spring-security.version>6.1.8</spring-security.version>
+        <!-- Remediates CVE-2024-31573 => Upgrades xmlunit from 2.9.1 to 2.10.0 -->
+        <xmlunit2.version>2.10.0</xmlunit2.version>
+
+        <!-- Remediates ESW4 dependency => Upgrades commons-io from 2.11.0 to 2.15.1 -->
+        <version.commons-io>2.15.1</version.commons-io>
+        <!-- Remediates ESW4 dependency licensing issue => Downgrades brics-automaton from 1.12.4 to 1.12.1 -->
+        <version.brics-automaton>1.12-1</version.brics-automaton>
+        <!-- Remediates ESW4 dependency => Upgrades zstd-jni from 1.5.2-1 to 1.5.5-6 -->
+        <version.zstd-jni>1.5.5-6</version.zstd-jni>
+        <!-- Remediates ESW4 dependency => Upgrades commons-logging from 1.2.0 to 1.3.0 -->
+        <version.commons-logging>1.3.0</version.commons-logging>
+        <!-- Remediates ESW4 dependency => Upgrades micrometer from 1.11.8 to 1.11.10 -->
+        <micrometer.version>1.11.10</micrometer.version>
+        <!-- Remediates ESW4 dependency => Upgrades commons-lang3 from 3.12.0 to 3.14.0 -->
+        <commons-lang3.version>3.14.0</commons-lang3.version>
+        <!-- Remediates ESW4 dependency => Upgrades junit-jupiter from 5.9.3 to 5.10.2 -->
+        <junit-jupiter.version>5.10.2</junit-jupiter.version>
+    </properties>
+    <dependencyManagement>
+        <dependencies>
+
+            <!-- Project Modules -->
+            <dependency>
+                <groupId>com.ericsson.oss.air</groupId>
+                <artifactId>eric-oss-core-reporting-dimension-query-cts-stubs</artifactId>
+                <version>${project.version}</version>
+                <classifier>stubs</classifier>
+            </dependency>
+            <dependency>
+                <groupId>com.ericsson.oss.air</groupId>
+                <artifactId>eric-oss-core-reporting-dimension-query-security</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+
+            <!-- Ericsson Dependencies -->
+            <dependency>
+                <groupId>com.ericsson.oss.orchestration.eo</groupId>
+                <artifactId>eric-common-logging</artifactId>
+                <version>${version.eric-common-logging}</version>
+                <scope>runtime</scope>
+                <exclusions>
+                    <exclusion>
+                        <groupId>org.xerial.snappy</groupId>
+                        <artifactId>snappy-java</artifactId>
+                    </exclusion>
+                </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>com.ericsson.adp</groupId>
+                <artifactId>adp-chassis-spring-boot-bom</artifactId>
+                <version>${adp-chassis-spring-boot-bom.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
+            <!-- Spring Dependencies -->
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${version.spring-cloud}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>org.springdoc</groupId>
+                <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+                <version>${springdoc-openapi-starter.version}</version>
+            </dependency>
+
+            <!-- 3pps -->
+            <dependency>
+                <groupId>org.yaml</groupId>
+                <artifactId>snakeyaml</artifactId>
+                <version>${version.snakeyaml}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.openapitools</groupId>
+                <artifactId>jackson-databind-nullable</artifactId>
+                <version>${version.jackson-databind-nullable}</version>
+            </dependency>
+
+            <!-- Remediates CVE-2023-41329 => Upgrades wiremock-jre8-standalone from 2.35.0 to 2.35.1  -->
+            <dependency>
+                <groupId>com.github.tomakehurst</groupId>
+                <artifactId>wiremock-jre8-standalone</artifactId>
+                <version>${version.wiremock-jre8-standalone}</version>
+                <scope>compile</scope>
+            </dependency>
+
+            <!-- Remediates ESW4 dependency licensing issue => Upgrades zstd-jni from 1.5.2-1 to 1.5.5-6 -->
+            <dependency>
+                <groupId>com.github.luben</groupId>
+                <artifactId>zstd-jni</artifactId>
+                <version>${version.zstd-jni}</version>
+            </dependency>
+
+            <!-- Remediates ESW4 dependency licensing issue => Upgrades commons-logging from 1.2.0 to 1.3.0 -->
+            <dependency>
+                <groupId>commons-logging</groupId>
+                <artifactId>commons-logging</artifactId>
+                <version>${version.commons-logging}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-javadoc-plugin</artifactId>
+                    <version>${maven-javadoc-plugin.version}</version>
+                    <executions>
+                        <execution>
+                            <id>attach-javadocs</id>
+                            <goals>
+                                <goal>jar</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                    <configuration>
+                        <doclint>none</doclint>
+                        <encoding>UTF-8</encoding>
+                        <failOnError>true</failOnError>
+                    </configuration>
+                </plugin>
+
+                <plugin>
+                    <groupId>com.mycila</groupId>
+                    <artifactId>license-maven-plugin</artifactId>
+                    <version>${version.license-maven-plugin}</version>
+                    <configuration>
+                        <skip>${skipLicenseCheck}</skip>
+                        <mapping>
+                            <java>javadoc_style</java>
+                            <groovy>javadoc_style</groovy>
+                        </mapping>
+                        <headerDefinitions>
+                            <headerDefinition>cicd/quality-tools/license/javaHeaderDefinition.xml</headerDefinition>
+                            <headerDefinition>cicd/quality-tools/license/xmlHeaderDefinition.xml</headerDefinition>
+                        </headerDefinitions>
+                        <licenseSets>
+                            <licenseSet>
+                                <header>cicd/quality-tools/license/copyright-2024.txt</header>
+                                <validHeaders>
+                                    <validHeader>cicd/quality-tools/license/copyright-2020.txt</validHeader>
+                                    <validHeader>cicd/quality-tools/license/copyright-2021.txt</validHeader>
+                                    <validHeader>cicd/quality-tools/license/copyright-2022.txt</validHeader>
+                                    <validHeader>cicd/quality-tools/license/copyright-2023.txt</validHeader>
+                                </validHeaders>
+                                <includes>
+                                    <include>**/*.java</include>
+                                </includes>
+                                <excludes>
+                                    <exclude>.bob/*</exclude>
+                                    <exclude>.bob*/</exclude>
+                                    <exclude>batteries/**/*</exclude>
+                                    <exclude>bob/**/*</exclude>
+                                    <exclude>bob*/</exclude>
+                                    <exclude>cicd/**/*</exclude>
+                                    <exclude>doc/*</exclude>
+                                    <exclude>doc*/</exclude>
+                                    <exclude>k8s-logs/*</exclude>
+                                    <exclude>**/.helmignore</exclude>
+                                    <exclude>**/*.html</exclude>
+                                    <exclude>**/_helpers.tpl</exclude>
+                                    <exclude>**/*.tgz</exclude>
+                                    <exclude>**/VERSION*</exclude>
+                                    <exclude>**/*.repo</exclude>
+                                    <exclude>license/copyright*</exclude>
+                                    <exclude>design-rule-check-report*</exclude>
+                                    <exclude>helm-install-dry-run.log</exclude>
+                                    <exclude>*artifact.properties</exclude>
+                                    <exclude>**/*.txt</exclude>
+                                    <exclude>**/custom_stages.yaml</exclude>
+                                    <exclude>**/*.Jenkinsfile</exclude>
+                                    <exclude>**/*.adoc</exclude>
+                                    <exclude>**/*.config</exclude>
+                                    <exclude>**/rest2html*.zip</exclude>
+                                    <exclude>settings.xml</exclude>
+                                    <exclude>fossa/dependencies.yaml</exclude>
+                                    <exclude>ci/dependencies/**</exclude>
+                                    <exclude>build/**</exclude>
+                                    <exclude>trivy_metadata.properties</exclude>
+                                    <exclude>sonar-project.properties</exclude>
+                                    <exclude>**/.m2/**</exclude>
+                                </excludes>
+                            </licenseSet>
+                        </licenseSets>
+                    </configuration>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>check</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
+                <plugin>
+                    <groupId>org.springframework.cloud</groupId>
+                    <artifactId>spring-cloud-contract-maven-plugin</artifactId>
+                    <version>${spring-cloud-contract-plugin.version}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.sonarsource.scanner.maven</groupId>
+                    <artifactId>sonar-maven-plugin</artifactId>
+                    <version>${version.sonar-maven-plugin}</version>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-checkstyle-plugin</artifactId>
+                    <version>${maven-checkstyle-plugin.version}</version>
+                    <dependencies>
+                        <dependency>
+                            <groupId>com.puppycrawl.tools</groupId>
+                            <artifactId>checkstyle</artifactId>
+                            <version>${checkstyle.version}</version>
+                        </dependency>
+                    </dependencies>
+                    <configuration>
+                        <configLocation>cicd/quality-tools/checkstyle.xml</configLocation>
+                        <suppressionsLocation>cicd/quality-tools/checkstyle-suppressions.xml</suppressionsLocation>
+                        <violationSeverity>warning</violationSeverity>
+                        <failsOnError>true</failsOnError>
+                        <failOnViolation>true</failOnViolation>
+                        <logViolationsToConsole>true</logViolationsToConsole>
+                        <consoleOutput>true</consoleOutput>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>com.github.spotbugs</groupId>
+                    <artifactId>spotbugs-maven-plugin</artifactId>
+                    <version>${spotbugs-maven-plugin.version}</version>
+                    <configuration>
+                        <effort>Max</effort>
+                        <threshold>Low</threshold>
+                        <includeFilterFile>cicd/quality-tools/spotbugs-filter.xml</includeFilterFile>
+                        <failOnError>true</failOnError>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>com.github.ferstl</groupId>
+                    <artifactId>depgraph-maven-plugin</artifactId>
+                    <!--fossa-cli enforces a specific plugin version and ignores the one defined here. Since fossa-cli v3.2.15, the depgraph plugin version is 4.0.1-->
+                    <version>${depgraph-maven-plugin.version}</version>
+                    <configuration>
+                        <scopes>provided,compile,runtime</scopes>
+                        <excludes>
+                            <exclude>org.springframework.boot:spring-boot-devtools</exclude>
+                            <exclude>org.projectlombok:lombok</exclude>
+                        </excludes>
+                        <!-- Disable labelling dependencies with optional due to a fossa-cli issue -->
+                        <showOptional>false</showOptional>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-enforcer-plugin</artifactId>
+                    <version>${maven-enforcer-plugin.version}</version>
+                    <configuration>
+                        <rules>
+                            <bannedDependencies>
+                                <excludes>
+                                    <exclude>io.projectreactor:reactor-test</exclude>
+                                </excludes>
+                                <includes>
+                                    <include>io.projectreactor:reactor-test:*:*:test</include>
+                                </includes>
+                                <message>Scope of io.projectreactor:reactor-test dependency must be explicitly set to test</message>
+                            </bannedDependencies>
+                        </rules>
+                        <fail>true</fail>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-pmd-plugin</artifactId>
+                    <version>${maven-pmd-plugin.version}</version>
+                    <configuration>
+                        <rulesets>
+                            <ruleset>cicd/quality-tools/pmd.xml</ruleset>
+                        </rulesets>
+                        <printFailingErrors>true</printFailingErrors>
+                        <linkXRef>false</linkXRef>
+                    </configuration>
+                </plugin>
+                <!-- JaCoCo plugin for Java Code Coverage -->
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>${version.jacoco-maven.plugin}</version>
+                    <configuration>
+                        <excludes>
+                            <exclude>**/api/**</exclude>
+                            <exclude>com/ericsson/oss/air/cardq/model/**</exclude>
+                            <exclude>com/ericsson/oss/air/**/*Exception.java</exclude>
+                            <exclude>com/ericsson/oss/air/security/config/*</exclude>
+                            <exclude>**/*Configuration.java</exclude>
+                            <exclude>**/*Properties.java</exclude>
+                            <exclude>bob/**/*</exclude>
+                            <exclude>batteries/**/*</exclude>
+                        </excludes>
+                        <rules>
+                            <rule>
+                                <element>BUNDLE</element>
+                                <limits>
+                                    <limit>
+                                        <counter>COMPLEXITY</counter>
+                                        <value>COVEREDRATIO</value>
+                                        <minimum>${jacoco-maven-plugin.coveredratio.minimum}</minimum>
+                                    </limit>
+                                </limits>
+                            </rule>
+                        </rules>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-compiler-plugin</artifactId>
+                    <configuration>
+                        <release>${version.openjdk}</release>
+                        <annotationProcessorPaths>
+                            <annotationProcessorPath>
+                                <groupId>org.projectlombok</groupId>
+                                <artifactId>lombok</artifactId>
+                                <version>${lombok.version}</version>
+                            </annotationProcessorPath>
+                        </annotationProcessorPaths>
+                    </configuration>
+                </plugin>
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-surefire-report-plugin</artifactId>
+                    <version>${surefire-report-plugin.version}</version>
+                    <configuration>
+                        <aggregate>false</aggregate>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+    </build>
+    <profiles>
+        <profile>
+            <id>ci-deploy</id>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>default-compile</id>
+                                <phase>none</phase>
+                            </execution>
+                            <execution>
+                                <id>default-testCompile</id>
+                                <phase>none</phase>
+                            </execution>
+                            <execution>
+                                <id>test-compile</id>
+                                <phase>none</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>default-test</id>
+                                <phase>none</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-install-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>default-install</id>
+                                <phase>none</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-resources-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>default-resources</id>
+                                <phase>none</phase>
+                            </execution>
+                            <execution>
+                                <id>default-testResources</id>
+                                <phase>none</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-shade-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>default</id>
+                                <phase>none</phase>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-jar-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>default-jar</id>
+                                <configuration>
+                                    <forceCreation>false</forceCreation>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
+    <distributionManagement>
+        <snapshotRepository>
+            <id>snapshot</id>
+            <name>Snapshot Repository</name>
+            <url>https://arm.seli.gic.ericsson.se/artifactory/proj-bos-assurance-dev-local</url>
+        </snapshotRepository>
+        <repository>
+            <id>release</id>
+            <name>Release Repository</name>
+            <url>https://arm.seli.gic.ericsson.se/artifactory/proj-bos-assurance-release-local</url>
+        </repository>
+    </distributionManagement>
+</project>

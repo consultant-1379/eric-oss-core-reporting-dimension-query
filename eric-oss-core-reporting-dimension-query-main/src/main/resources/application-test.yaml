@@ -1,0 +1,71 @@
+#
+# COPYRIGHT Ericsson 2022
+#
+#
+#
+# The copyright to the computer program(s) herein is the property of
+#
+# Ericsson Inc. The programs may be used and/or copied only with written
+#
+# permission from Ericsson Inc. or in accordance with the terms and
+#
+# conditions stipulated in the agreement/contract under which the
+#
+# program(s) have been supplied.
+#
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+logging:
+  config: ${LOGBACK_CONFIG_FILE:classpath:logback-plain-text.xml}
+
+ericsson:
+  logging:
+    runtime-level-control:
+      enabled: false
+
+cts:
+  url: http://localhost:10101
+  user: sysadm
+  password:
+  databaseName: eai_install
+  databaseHost: localhost
+  retry:
+    delay: 100
+  tls:
+    enabled: false
+
+ath:
+  query:
+    path: src/test/resources/fixtures
+
+adp-file-watcher:
+  pooling-interval: 1 # poll every second for filesystem changes
+
+spring:
+  data:
+    neo4j:
+      database: neo4j
+  neo4j:
+    uri: "neo4j://localhost:7687"
+    security:
+      trustedCertAlias: root-cacert
+    retry:
+      delay: 100
+
+adp-certificate:
+  discovery:
+    root-read-path: target/security
+    root-write-path: target/security
+    keystore-relative-dir: keystore
+    truststore-relative-dir: truststore
+    password: "password"
+    keyPassword: "keyPassword"
+
+# for local development, change stubs-mode to local
+#stubrunner:
+#  stubs-mode: local

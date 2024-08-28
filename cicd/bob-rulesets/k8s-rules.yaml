@@ -1,0 +1,36 @@
+modelVersion: 2.0
+
+
+description: "K8S generic rules"
+
+
+import:
+  images: docker-images.yaml
+
+
+properties:
+  - k8s-cmd: " "
+
+  - helm-version: 3.13.0
+  - k8s-version: 1.26.6
+  - k8s-docker-flags:
+      --env HELM_VERSION
+      --env KUBECTL_VERSION
+      --env KUBECONFIG=/tmp/admin.conf
+      --volume ${env.KUBECONFIG}:/tmp/admin.conf:ro
+
+
+env:
+  - HOME
+  - KUBECONFIG (default=${env.HOME}/.kube/config)
+  - KUBECTL_VERSION (default=${k8s-version})
+  - HELM_VERSION (default=${helm-version})
+
+
+rules:
+  cmd:
+    - task: cmd
+      docker-image: images.py3kubehelmbuilder
+      docker-flags:
+        - ${k8s-docker-flags}
+      cmd: ${k8s-cmd}

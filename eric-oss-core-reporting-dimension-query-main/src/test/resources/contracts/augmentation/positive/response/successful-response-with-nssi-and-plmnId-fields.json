@@ -1,0 +1,24 @@
+{
+  "fields": [
+    [
+      {
+        "name": "nssi",
+        "value": "NetworkSliceSubnet:NSSI-A11"
+      },
+      {
+        "name": "plmnId",
+        "value": "100-101"
+      }
+    ],
+    [
+      {
+        "name": "nssi",
+        "value": "NetworkSliceSubnet:NSSI-A1"
+      },
+      {
+        "name": "plmnId",
+        "value": "100-101"
+      }
+    ]
+  ]
+}

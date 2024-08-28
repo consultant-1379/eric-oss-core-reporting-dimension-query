@@ -1,0 +1,24 @@
+{
+  "fields": [
+    [
+      {
+        "name": "nssi",
+        "value": "NetworkSliceSubnet:NSSI-A11"
+      },
+      {
+        "name": "site",
+        "value": "GeographicSite:DataCenter1"
+      }
+    ],
+    [
+      {
+        "name": "nssi",
+        "value": "NetworkSliceSubnet:NSSI-A1"
+      },
+      {
+        "name": "site",
+        "value": "GeographicSite:DataCenter1"
+      }
+    ]
+  ]
+}

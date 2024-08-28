@@ -1,0 +1,142 @@
+#
+# COPYRIGHT Ericsson 2021
+#
+#
+#
+# The copyright to the computer program(s) herein is the property of
+#
+# Ericsson Inc. The programs may be used and/or copied only with written
+#
+# permission from Ericsson Inc. or in accordance with the terms and
+#
+# conditions stipulated in the agreement/contract under which the
+#
+# program(s) have been supplied.
+#
+
+#============================================================#
+# !!!!!!!!!!!!!!!!!!!!!!!WARNING!!!!!!!!!!!!!!!!!!!!!!!!!!!! #
+# This is a sample Microservice Product Structure.           #
+# Please review it carefully and adapt to your product needs.#
+#============================================================#
+modelVersion: "2.0"
+flavor: "Generic" # Update it to ADP for ADP Generic Services / Reusable Services
+service:
+  name: "eric-oss-core-reporting-dimension-query"
+  design_countries:
+   - SE
+  sw_compilation_country: SE
+  release_responsible: BDGSIDSDA
+  design_responsible: SE
+  documents:
+    # documents.yaml is a generated file using munin-doc search
+    import: documents.yaml
+
+  top_product:
+    alias: ["eric-oss-core-reporting-dimension-query"]
+    # Note: all derivative_products automatically are added to APR product structure
+    number: APR 201 940
+    designation: "eric-oss-core-reporting-dimension-query"
+    description: "eric-oss-core-reporting-dimension-query Microservice"
+    includes:
+      # PRI
+      - eridoc: 109 21-APR 201 0000
+        step_strategy: highest revision letter
+
+      # Vulnerability Analysis Report
+      # This document is not generated automatically, it has to be manually uploaded and approved
+      #- eridoc:  1597-APR 201 0000
+      #  step_strategy: highest revision letter
+
+      # Test Report
+      - eridoc: 152 83-APR 201 0000
+        step_strategy: highest revision letter
+
+      # Service User Guide
+      #- eridoc: 1553-APR 201 0000
+      #  step_strategy: highest revision letter
+
+      # Risk Assessment
+      # This document is not generated automatically, it has to be manually uploaded and approved
+      #- eridoc: 006 64-APR 201 0000
+      #  step_strategy: highest revision letter
+
+      # Test Specification
+      #- eridoc: 152 41-APR 201 0000
+      #  step_strategy: highest revision letter
+
+      # Characteristics Summary Report
+      #- eridoc: "152 83-APR 201 0000"
+      #  step_strategy: highest revision letter
+
+      # SUSE Licenses
+      - prim: 1/FAL 115 3215
+        rstate: R1A
+      - prim: 3/FAL 115 3215
+        rstate: R1A
+      - prim: 5/FAL 115 3215
+        rstate: R1Ad
+      - prim: 7/FAL 115 3215
+        rstate: R1A
+
+  # Details of the Source product structure
+  src_products:
+      # Source Code product
+    - label: "source"
+      designation: "eric-oss-core-reporting-dimension-query Source"
+      description: "eric-oss-core-reporting-dimension-query Source"
+      number: CAV 101 1052
+      alias: ["eric-oss-core-reporting-dimension-query-src"]
+
+  derivative_products:
+    - label: "helm"
+      designation: "eric-oss-core-reporting-dimension-query Helm Chart"
+      description: "eric-oss-core-reporting-dimension-query Helm Chart"
+      number: CXD 101 724
+      alias: ["eric-oss-core-reporting-dimension-query"]
+      derivedFrom:
+        munin: CAV 101 1052
+
+    - label: "main_image"
+      designation: "eric-oss-core-reporting-dimension-query Container Image"
+      description: "eric-oss-core-reporting-dimension-query Container Image"
+      number: CXU 101 2166
+      alias: ["eric-oss-core-reporting-dimension-query-image"]
+      includes:
+        # Remove if CBO Package repository is not used
+        - munin: CXC 201 2031 # Common Base OS SLES Packages
+          version: ##CBO_VERSION##
+          secondPartyProduct: "True"
+        - munin: CXU 101 1463 # Common Base OS Micro Image
+          version: ##CBO_VERSION##
+          secondPartyProduct: "True"
+        - munin: CXA 301 021 # ADP Spring Boot Chassis - BOM
+          version: ##ADP_CHASSIS_LIBRARY_VERSION##
+          secondPartyProduct: "True"
+        - munin: CXA 301 022 # ADP Spring Boot Chassis - File Watcher Lib
+          version: ##ADP_CHASSIS_LIBRARY_VERSION##
+          secondPartyProduct: "True"
+        - munin: CXA 301 024 # ADP Spring Boot Chassis - Configuration Reloader Lib
+          version: ##ADP_CHASSIS_LIBRARY_VERSION##
+          secondPartyProduct: "True"
+        - munin: CXA 301 025 # ADP Spring Boot Chassis - RFC7807 Problem Details for HTTP APIs Lib
+          version: ##ADP_CHASSIS_LIBRARY_VERSION##
+          secondPartyProduct: "True"
+        - munin: CXA 301 026 # ADP Spring Boot Chassis - Certificate Reloader Lib
+          version: ##ADP_CHASSIS_LIBRARY_VERSION##
+          secondPartyProduct: "True"
+        - munin: CXA 301 027 # ADP Spring Boot Chassis - Tomcat TLS Certificate Reloader Lib
+          version: ##ADP_CHASSIS_LIBRARY_VERSION##
+          secondPartyProduct: "True"
+        - munin: CXA 301 030 # ADP Spring Boot Chassis - ADP Common Logging Format Lib
+          version: ##ADP_CHASSIS_LIBRARY_VERSION##
+          secondPartyProduct: "True"
+        - munin: CXA 301 031 # ADP Spring Boot Chassis - ADP Audit Log Lib
+          version: ##ADP_CHASSIS_LIBRARY_VERSION##
+          secondPartyProduct: "True"
+      uses_foss:
+        - dependencies_file: ../dependencies/dependencies-3pp.yaml
+      uses_encryption:
+        - import: encryptions.yaml
+      derivedFrom:
+        munin: CAV 101 1052

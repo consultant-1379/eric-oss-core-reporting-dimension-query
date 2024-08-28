@@ -1,0 +1,76 @@
+{
+  "fields": [
+    [
+      {
+        "name": "qos",
+        "value": "1"
+      },
+      {
+        "name": "nsi",
+        "value": "macNsiDedicated20230728x1543_qosh96mac01_nsi"
+      },
+      {
+        "name": "nssi",
+        "value": "macNsiDedicated20230728x1543_qosh96mac01_nssi"
+      },
+      {
+        "name": "tac",
+        "value": "20"
+      }
+    ],
+    [
+      {
+        "name": "qos",
+        "value": "6"
+      },
+      {
+        "name": "nsi",
+        "value": "macNsiDedicated20230728x1543_qosh96mac01_nsi"
+      },
+      {
+        "name": "nssi",
+        "value": "macNsiDedicated20230728x1543_qosh96mac01_nssi"
+      },
+      {
+        "name": "tac",
+        "value": "20"
+      }
+    ],
+    [
+      {
+        "name": "qos",
+        "value": "1"
+      },
+      {
+        "name": "nsi",
+        "value": ""
+      },
+      {
+        "name": "nssi",
+        "value": "nssiQosh96mac02"
+      },
+      {
+        "name": "tac",
+        "value": "20"
+      }
+    ],
+    [
+      {
+        "name": "qos",
+        "value": "6"
+      },
+      {
+        "name": "nsi",
+        "value": ""
+      },
+      {
+        "name": "nssi",
+        "value": "nssiQosh96mac02"
+      },
+      {
+        "name": "tac",
+        "value": "20"
+      }
+    ]
+  ]
+}

@@ -1,0 +1,34 @@
+athQuery:
+  core: >-
+    MATCH
+      (wnf:wirelessNetworkFunction {$fdn}) <-[:networkSliceSubnets_to_wirelessNetFunction]- (nssi1:networkslicesubnet),
+      (nssi1) <-[:networkSliceSubnet_to_networkSliceSubnet*]- (nssi2:networkslicesubnet),
+      (nssi2) <-[:networkSlice_to_networkSliceSubnet]- (nsi:networkslice),
+      (nsi) -[:networkSlice_to_requirement_serviceProfiles]-> (servicep:serviceprofile),
+      (servicep) -[:serviceProfile_to_plmnInfo]-> (plmn:plmninfo {$plmn}),
+      (wnf) <-[:wirelessNetFunction_to_site]- (site:geographicsite)
+    OPTIONAL MATCH (nssi1)-[:networkSliceSubnet_to_requirement_sliceProfile]->(slicep:sliceprofile)-[:SliceProfile_to_plmnInfo]->(plmn)
+    MATCH (nssi:networkslicesubnet) WHERE elementId(nssi) = elementId(nssi1) OR elementId(nssi) = elementId(nssi2)
+    RETURN DISTINCT
+      nssi.name AS nssi,
+      nsi.name AS nsi,
+      site.name AS site,
+      wnf.ExternalRef_nodeFDN AS nodeFDN,
+      plmn.sNSSAI_SST + '-' + plmn.sNSSAI_SD AS snssai,
+      plmn.plmn_mcc + '-' + plmn.plmn_mnc AS plmnId
+  ran: >-
+    MATCH (nrcell:nrcell {$fdn})
+    OPTIONAL MATCH (nrcell) -[:nrCell_to_plmnInfo]-> (plmn:plmninfo {$plmn}),
+    (plmn) <-[:SliceProfile_to_plmnInfo]- (sliceProf:sliceprofile),
+    (sliceProf) <-[:networkSliceSubnet_to_requirement_sliceProfile]- (nssi:networkslicesubnet)
+    OPTIONAL MATCH (nrcell) <-[:nrCells_to_gnbdu]- (gnbdu:gnbdu),
+    (gnbdu) -[:wirelessNetworkFunctionHas5QISets]-> (fiveqiset:fiveqiset),
+    (fiveqiset) -[:fiveQISetContainsFiveQIFlows]-> (fiveqiflow:fiveqiflow {$qos})
+    RETURN DISTINCT
+      fiveqiflow.fiveQIValue as qos,
+      nssi.name AS nssi,
+      nrcell.trackingAreaCode AS tac,
+      nrcell.localCellIdNci AS cellId,
+      plmn.plmn_mcc + '-' + plmn.plmn_mnc AS plmnId,
+      plmn.sNSSAI_SST + '-' + plmn.sNSSAI_SD AS snssai,
+      nrcell.ExternalRef_nrCellDuFDN AS moFDN

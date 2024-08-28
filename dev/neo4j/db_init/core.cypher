@@ -1,0 +1,89 @@
+:begin
+CREATE CONSTRAINT amf_uuid FOR (node:amf) REQUIRE (node.uuid) IS UNIQUE;
+CREATE CONSTRAINT cismcluster_uuid FOR (node:cismcluster) REQUIRE (node.uuid) IS UNIQUE;
+CREATE CONSTRAINT geographicsite_uuid FOR (node:geographicsite) REQUIRE (node.uuid) IS UNIQUE;
+CREATE CONSTRAINT networkslice_uuid FOR (node:networkslice) REQUIRE (node.uuid) IS UNIQUE;
+CREATE CONSTRAINT networkslicesubnet_uuid FOR (node:networkslicesubnet) REQUIRE (node.uuid) IS UNIQUE;
+CREATE CONSTRAINT plmninfo_uuid FOR (node:plmninfo) REQUIRE (node.uuid) IS UNIQUE;
+CREATE CONSTRAINT serviceprofile_uuid FOR (node:serviceprofile) REQUIRE (node.uuid) IS UNIQUE;
+CREATE CONSTRAINT sliceprofile_uuid FOR (node:sliceprofile) REQUIRE (node.uuid) IS UNIQUE;
+CREATE CONSTRAINT smf_uuid FOR (node:smf) REQUIRE (node.uuid) IS UNIQUE;
+CREATE CONSTRAINT upf_uuid FOR (node:upf) REQUIRE (node.uuid) IS UNIQUE;
+:commit
+CALL db.awaitIndexes(300);
+:begin
+UNWIND [{uuid:"ctw/plmninfo/3828", properties:{sNSSAI_SST:"1", plmn_mcc:"100", name:"PlmnInfo:100-101|1-1", sNSSAI_SD:"1", plmn_mnc:"101"}}, {uuid:"ctw/plmninfo/3830", properties:{sNSSAI_SST:"5", plmn_mcc:"100", name:"PlmnInfo:100-101|1-5", sNSSAI_SD:"1", plmn_mnc:"101"}}, {uuid:"ctw/plmninfo/3832", properties:{sNSSAI_SST:"9", plmn_mcc:"100", name:"PlmnInfo:100-101|3-9", sNSSAI_SD:"3", plmn_mnc:"101"}}, {uuid:"ctw/plmninfo/3831", properties:{sNSSAI_SST:"9", plmn_mcc:"100", name:"PlmnInfo:100-101|1-9", sNSSAI_SD:"1", plmn_mnc:"101"}}, {uuid:"ctw/plmninfo/3833", properties:{sNSSAI_SST:"83", plmn_mcc:"100", name:"PlmnInfo:100-101|5-83", sNSSAI_SD:"5", plmn_mnc:"101"}}, {uuid:"ctw/plmninfo/3829", properties:{sNSSAI_SST:"3", plmn_mcc:"100", name:"PlmnInfo:100-101|1-3", sNSSAI_SD:"1", plmn_mnc:"101"}}] AS row
+CREATE (n:plmninfo{uuid: row.uuid}) SET n += row.properties SET n:ctw:cmObject;
+UNWIND [{uuid:"ctw/networkslice/21315", properties:{name:"NetworkSlice:NSI-A"}}, {uuid:"ctw/networkslice/21316", properties:{name:"NetworkSlice:NSI-B"}}, {uuid:"ctw/networkslice/21317", properties:{name:"NetworkSlice:NSI-C"}}] AS row
+CREATE (n:networkslice{uuid: row.uuid}) SET n += row.properties SET n:ctw:logicalPartition;
+UNWIND [{uuid:"ctw/smf/21330", properties:{SOA_NF_nfFqdn:"pcc00020.sero.gic.ericsson.se", ExternalRef_nodeFDN:"MeContext=PCC00020,ManagedElement=PCC00020", SOA_NF_applicationId:"PCC00020", name:"WirelessNetworkFunction:PCC00020-SMF", SOA_NF_oamIP:"10.120.130.20", SOA_NF_nfInstanceId:"07568e58-8b71-4c2c-ac47-9aafec5e7120"}}, {uuid:"ctw/smf/21331", properties:{SOA_NF_nfFqdn:"pcc00021.sero.gic.ericsson.se", ExternalRef_nodeFDN:"MeContext=PCC00021,ManagedElement=PCC00021", SOA_NF_applicationId:"PCC00021", name:"WirelessNetworkFunction:PCC00021-SMF", SOA_NF_oamIP:"10.120.130.21", SOA_NF_nfInstanceId:"07568e58-8b71-4c2c-ac47-9aafec5e7121"}}, {uuid:"ctw/smf/21332", properties:{SOA_NF_nfFqdn:"pcc00022.sero.gic.ericsson.se", ExternalRef_nodeFDN:"MeContext=PCC00022,ManagedElement=PCC00022", SOA_NF_applicationId:"PCC00022", name:"WirelessNetworkFunction:PCC00022-SMF", SOA_NF_oamIP:"10.120.130.22", SOA_NF_nfInstanceId:"07568e58-8b71-4c2c-ac47-9aafec5e7122"}}] AS row
+CREATE (n:smf{uuid: row.uuid}) SET n += row.properties SET n:ctw:wirelessNetworkFunction;
+UNWIND [{uuid:"ctg/geographicsite/1045", properties:{name:"GeographicSite:DataCenter1"}}, {uuid:"ctg/geographicsite/1046", properties:{name:"GeographicSite:DataCenter2"}}] AS row
+CREATE (n:geographicsite{uuid: row.uuid}) SET n += row.properties SET n:ctg:topologyContainer;
+UNWIND [{uuid:"ctw/upf/21333", properties:{SOA_NF_nfFqdn:"pcg00030.sero.gic.ericsson.se", ExternalRef_nodeFDN:"MeContext=PCG00030,ManagedElement=PCC00030", SOA_NF_applicationId:"PCG00030", name:"WirelessNetworkFunction:PCG00030-UPF", SOA_NF_oamIP:"10.120.130.30", SOA_NF_nfInstanceId:"07568e58-8b71-4c2c-ac47-9aafec5e7130"}}, {uuid:"ctw/upf/21334", properties:{SOA_NF_nfFqdn:"pcg00031.sero.gic.ericsson.se", ExternalRef_nodeFDN:"MeContext=PCG00031,ManagedElement=PCC00031", SOA_NF_applicationId:"PCG00031", name:"WirelessNetworkFunction:PCG00031-UPF", SOA_NF_oamIP:"10.120.130.31", SOA_NF_nfInstanceId:"07568e58-8b71-4c2c-ac47-9aafec5e7131"}}, {uuid:"ctw/upf/21335", properties:{SOA_NF_nfFqdn:"pcg00032.sero.gic.ericsson.se", ExternalRef_nodeFDN:"MeContext=PCG00032,ManagedElement=PCC00032", SOA_NF_applicationId:"PCG00032", name:"WirelessNetworkFunction:PCG00032-UPF", SOA_NF_oamIP:"10.120.130.32", SOA_NF_nfInstanceId:"07568e58-8b71-4c2c-ac47-9aafec5e7131"}}] AS row
+CREATE (n:upf{uuid: row.uuid}) SET n += row.properties SET n:ctw:wirelessNetworkFunction;
+UNWIND [{uuid:"ctw/networkslicesubnet/21318", properties:{name:"NetworkSliceSubnet:NSSI-A1"}}, {uuid:"ctw/networkslicesubnet/21319", properties:{name:"NetworkSliceSubnet:NSSI-B1"}}, {uuid:"ctw/networkslicesubnet/21320", properties:{name:"NetworkSliceSubnet:NSSI-C1"}}, {uuid:"ctw/networkslicesubnet/21321", properties:{name:"NetworkSliceSubnet:NSSI-A11"}}, {uuid:"ctw/networkslicesubnet/21322", properties:{name:"NetworkSliceSubnet:NSSI-A12"}}, {uuid:"ctw/networkslicesubnet/21325", properties:{name:"NetworkSliceSubnet:NSSI-C11"}}, {uuid:"ctw/networkslicesubnet/21326", properties:{name:"NetworkSliceSubnet:NSSI-C12"}}, {uuid:"ctw/networkslicesubnet/21327", properties:{name:"NetworkSliceSubnet:NSSI-C13"}}, {uuid:"ctw/networkslicesubnet/21324", properties:{name:"NetworkSliceSubnet:NSSI-B12"}}, {uuid:"ctw/networkslicesubnet/21323", properties:{name:"NetworkSliceSubnet:NSSI-B11"}}] AS row
+CREATE (n:networkslicesubnet{uuid: row.uuid}) SET n += row.properties SET n:ctw:logicalPartition;
+UNWIND [{uuid:"ctw/amf/21328", properties:{SOA_NF_nfFqdn:"pcc00010.sero.gic.ericsson.se", ExternalRef_nodeFDN:"MeContext=PCC00010,ManagedElement=PCC00010", SOA_NF_applicationId:"PCC00010", name:"WirelessNetworkFunction:PCC00010-AMF", SOA_NF_oamIP:"10.120.130.10", SOA_NF_nfInstanceId:"07568e58-8b71-4c2c-ac47-9aafec5e710"}}, {uuid:"ctw/amf/21329", properties:{SOA_NF_nfFqdn:"pcc00011.sero.gic.ericsson.se", ExternalRef_nodeFDN:"MeContext=PCC00011,ManagedElement=PCC00011", SOA_NF_applicationId:"PCC00011", name:"WirelessNetworkFunction:PCC00012-AMF", SOA_NF_oamIP:"10.120.130.12", SOA_NF_nfInstanceId:"07568e58-8b71-4c2c-ac47-9aafec5e7101"}}] AS row
+CREATE (n:amf{uuid: row.uuid}) SET n += row.properties SET n:ctw:wirelessNetworkFunction;
+UNWIND [{uuid:"ctw/serviceprofile/1661", properties:{name:"ServiceProfile:SP-A"}}, {uuid:"ctw/serviceprofile/1662", properties:{name:"ServiceProfile:SP-B"}}, {uuid:"ctw/serviceprofile/1663", properties:{name:"ServiceProfile:SP-C"}}] AS row
+CREATE (n:serviceprofile{uuid: row.uuid}) SET n += row.properties SET n:ctw:profileObject;
+UNWIND [{uuid:"ctw/sliceprofile/3883", properties:{name:"SliceProfile:SP-A11"}}, {uuid:"ctw/sliceprofile/3884", properties:{name:"SliceProfile:SP-A12"}}, {uuid:"ctw/sliceprofile/3885", properties:{name:"SliceProfile:SP-B11"}}, {uuid:"ctw/sliceprofile/3886", properties:{name:"SliceProfile:SP-B12"}}, {uuid:"ctw/sliceprofile/3887", properties:{name:"SliceProfile:SP-C11"}}, {uuid:"ctw/sliceprofile/3888", properties:{name:"SliceProfile:SP-C12"}}, {uuid:"ctw/sliceprofile/3889", properties:{name:"SliceProfile:SP-C13"}}] AS row
+CREATE (n:sliceprofile{uuid: row.uuid}) SET n += row.properties SET n:ctw:profileObject;
+UNWIND [{uuid:"ctv/cismcluster/21313", properties:{name:"CismCluster:DataCenter1"}}, {uuid:"ctv/cismcluster/21314", properties:{name:"CismCluster:DataCenter2"}}] AS row
+CREATE (n:cismcluster{uuid: row.uuid}) SET n += row.properties SET n:ctv:controllerFunction;
+:commit
+:begin
+UNWIND [{start: {uuid:"ctw/sliceprofile/3883"}, end: {uuid:"ctw/plmninfo/3828"}, properties:{abstractAssociation:"hasProfile"}}, {start: {uuid:"ctw/sliceprofile/3884"}, end: {uuid:"ctw/plmninfo/3828"}, properties:{abstractAssociation:"hasProfile"}}, {start: {uuid:"ctw/sliceprofile/3885"}, end: {uuid:"ctw/plmninfo/3830"}, properties:{abstractAssociation:"hasProfile"}}, {start: {uuid:"ctw/sliceprofile/3886"}, end: {uuid:"ctw/plmninfo/3830"}, properties:{abstractAssociation:"hasProfile"}}, {start: {uuid:"ctw/sliceprofile/3887"}, end: {uuid:"ctw/plmninfo/3832"}, properties:{abstractAssociation:"hasProfile"}}, {start: {uuid:"ctw/sliceprofile/3888"}, end: {uuid:"ctw/plmninfo/3832"}, properties:{abstractAssociation:"hasProfile"}}, {start: {uuid:"ctw/sliceprofile/3889"}, end: {uuid:"ctw/plmninfo/3832"}, properties:{abstractAssociation:"hasProfile"}}, {start: {uuid:"ctw/sliceprofile/3885"}, end: {uuid:"ctw/plmninfo/3831"}, properties:{abstractAssociation:"hasProfile"}}, {start: {uuid:"ctw/sliceprofile/3886"}, end: {uuid:"ctw/plmninfo/3831"}, properties:{abstractAssociation:"hasProfile"}}, {start: {uuid:"ctw/sliceprofile/3887"}, end: {uuid:"ctw/plmninfo/3833"}, properties:{abstractAssociation:"hasProfile"}}, {start: {uuid:"ctw/sliceprofile/3888"}, end: {uuid:"ctw/plmninfo/3833"}, properties:{abstractAssociation:"hasProfile"}}, {start: {uuid:"ctw/sliceprofile/3889"}, end: {uuid:"ctw/plmninfo/3833"}, properties:{abstractAssociation:"hasProfile"}}, {start: {uuid:"ctw/sliceprofile/3883"}, end: {uuid:"ctw/plmninfo/3829"}, properties:{abstractAssociation:"hasProfile"}}, {start: {uuid:"ctw/sliceprofile/3884"}, end: {uuid:"ctw/plmninfo/3829"}, properties:{abstractAssociation:"hasProfile"}}] AS row
+MATCH (start:sliceprofile{uuid: row.start.uuid})
+MATCH (end:plmninfo{uuid: row.end.uuid})
+CREATE (start)-[r:SliceProfile_to_plmnInfo]->(end) SET r += row.properties;
+UNWIND [{start: {uuid:"ctw/networkslicesubnet/21321"}, end: {uuid:"ctw/amf/21328"}, properties:{abstractAssociation:"encompassesWirelessNetFunctions"}}, {start: {uuid:"ctw/networkslicesubnet/21323"}, end: {uuid:"ctw/amf/21328"}, properties:{abstractAssociation:"encompassesWirelessNetFunctions"}}, {start: {uuid:"ctw/networkslicesubnet/21325"}, end: {uuid:"ctw/amf/21329"}, properties:{abstractAssociation:"encompassesWirelessNetFunctions"}}] AS row
+MATCH (start:networkslicesubnet{uuid: row.start.uuid})
+MATCH (end:amf{uuid: row.end.uuid})
+CREATE (start)-[r:networkSliceSubnets_to_wirelessNetFunction]->(end) SET r += row.properties;
+UNWIND [{start: {uuid:"ctw/serviceprofile/1661"}, end: {uuid:"ctw/plmninfo/3828"}, properties:{abstractAssociation:"hasProfile"}}, {start: {uuid:"ctw/serviceprofile/1662"}, end: {uuid:"ctw/plmninfo/3830"}, properties:{abstractAssociation:"hasProfile"}}, {start: {uuid:"ctw/serviceprofile/1663"}, end: {uuid:"ctw/plmninfo/3832"}, properties:{abstractAssociation:"hasProfile"}}, {start: {uuid:"ctw/serviceprofile/1662"}, end: {uuid:"ctw/plmninfo/3831"}, properties:{abstractAssociation:"hasProfile"}}, {start: {uuid:"ctw/serviceprofile/1663"}, end: {uuid:"ctw/plmninfo/3833"}, properties:{abstractAssociation:"hasProfile"}}, {start: {uuid:"ctw/serviceprofile/1661"}, end: {uuid:"ctw/plmninfo/3829"}, properties:{abstractAssociation:"hasProfile"}}] AS row
+MATCH (start:serviceprofile{uuid: row.start.uuid})
+MATCH (end:plmninfo{uuid: row.end.uuid})
+CREATE (start)-[r:serviceProfile_to_plmnInfo]->(end) SET r += row.properties;
+UNWIND [{start: {uuid:"ctw/networkslice/21315"}, end: {uuid:"ctw/serviceprofile/1661"}, properties:{abstractAssociation:"hasProfile"}}, {start: {uuid:"ctw/networkslice/21316"}, end: {uuid:"ctw/serviceprofile/1662"}, properties:{abstractAssociation:"hasProfile"}}, {start: {uuid:"ctw/networkslice/21317"}, end: {uuid:"ctw/serviceprofile/1663"}, properties:{abstractAssociation:"hasProfile"}}] AS row
+MATCH (start:networkslice{uuid: row.start.uuid})
+MATCH (end:serviceprofile{uuid: row.end.uuid})
+CREATE (start)-[r:networkSlice_to_requirement_serviceProfiles]->(end) SET r += row.properties;
+UNWIND [{start: {uuid:"ctg/geographicsite/1045"}, end: {uuid:"ctw/upf/21333"}, properties:{abstractAssociation:"aggregatesWNF"}}, {start: {uuid:"ctg/geographicsite/1046"}, end: {uuid:"ctw/upf/21334"}, properties:{abstractAssociation:"aggregatesWNF"}}, {start: {uuid:"ctg/geographicsite/1046"}, end: {uuid:"ctw/upf/21335"}, properties:{abstractAssociation:"aggregatesWNF"}}] AS row
+MATCH (start:geographicsite{uuid: row.start.uuid})
+MATCH (end:upf{uuid: row.end.uuid})
+CREATE (start)-[r:wirelessNetFunction_to_site]->(end) SET r += row.properties;
+UNWIND [{start: {uuid:"ctg/geographicsite/1045"}, end: {uuid:"ctw/smf/21330"}, properties:{abstractAssociation:"aggregatesWNF"}}, {start: {uuid:"ctg/geographicsite/1046"}, end: {uuid:"ctw/smf/21331"}, properties:{abstractAssociation:"aggregatesWNF"}}, {start: {uuid:"ctg/geographicsite/1046"}, end: {uuid:"ctw/smf/21332"}, properties:{abstractAssociation:"aggregatesWNF"}}] AS row
+MATCH (start:geographicsite{uuid: row.start.uuid})
+MATCH (end:smf{uuid: row.end.uuid})
+CREATE (start)-[r:wirelessNetFunction_to_site]->(end) SET r += row.properties;
+UNWIND [{start: {uuid:"ctw/networkslice/21315"}, end: {uuid:"ctw/networkslicesubnet/21318"}, properties:{abstractAssociation:"encompassesLogicalPartitions"}}, {start: {uuid:"ctw/networkslice/21316"}, end: {uuid:"ctw/networkslicesubnet/21319"}, properties:{abstractAssociation:"encompassesLogicalPartitions"}}, {start: {uuid:"ctw/networkslice/21317"}, end: {uuid:"ctw/networkslicesubnet/21320"}, properties:{abstractAssociation:"encompassesLogicalPartitions"}}] AS row
+MATCH (start:networkslice{uuid: row.start.uuid})
+MATCH (end:networkslicesubnet{uuid: row.end.uuid})
+CREATE (start)-[r:networkSlice_to_networkSliceSubnet]->(end) SET r += row.properties;
+UNWIND [{start: {uuid:"ctg/geographicsite/1045"}, end: {uuid:"ctv/cismcluster/21313"}, properties:{abstractAssociation:"dependsOn"}}, {start: {uuid:"ctg/geographicsite/1046"}, end: {uuid:"ctv/cismcluster/21314"}, properties:{abstractAssociation:"dependsOn"}}] AS row
+MATCH (start:geographicsite{uuid: row.start.uuid})
+MATCH (end:cismcluster{uuid: row.end.uuid})
+CREATE (start)-[r:cismCluster_to_site]->(end) SET r += row.properties;
+UNWIND [{start: {uuid:"ctw/networkslicesubnet/21326"}, end: {uuid:"ctw/sliceprofile/3888"}, properties:{abstractAssociation:"hasProfile"}}, {start: {uuid:"ctw/networkslicesubnet/21321"}, end: {uuid:"ctw/sliceprofile/3883"}, properties:{abstractAssociation:"hasProfile"}}, {start: {uuid:"ctw/networkslicesubnet/21321"}, end: {uuid:"ctw/sliceprofile/3884"}, properties:{abstractAssociation:"hasProfile"}}, {start: {uuid:"ctw/networkslicesubnet/21323"}, end: {uuid:"ctw/sliceprofile/3885"}, properties:{abstractAssociation:"hasProfile"}}, {start: {uuid:"ctw/networkslicesubnet/21323"}, end: {uuid:"ctw/sliceprofile/3886"}, properties:{abstractAssociation:"hasProfile"}}, {start: {uuid:"ctw/networkslicesubnet/21325"}, end: {uuid:"ctw/sliceprofile/3887"}, properties:{abstractAssociation:"hasProfile"}}, {start: {uuid:"ctw/networkslicesubnet/21327"}, end: {uuid:"ctw/sliceprofile/3889"}, properties:{abstractAssociation:"hasProfile"}}] AS row
+MATCH (start:networkslicesubnet{uuid: row.start.uuid})
+MATCH (end:sliceprofile{uuid: row.end.uuid})
+CREATE (start)-[r:networkSliceSubnet_to_requirement_sliceProfile]->(end) SET r += row.properties;
+UNWIND [{start: {uuid:"ctg/geographicsite/1045"}, end: {uuid:"ctw/amf/21328"}, properties:{abstractAssociation:"aggregatesWNF"}}, {start: {uuid:"ctg/geographicsite/1046"}, end: {uuid:"ctw/amf/21329"}, properties:{abstractAssociation:"aggregatesWNF"}}] AS row
+MATCH (start:geographicsite{uuid: row.start.uuid})
+MATCH (end:amf{uuid: row.end.uuid})
+CREATE (start)-[r:wirelessNetFunction_to_site]->(end) SET r += row.properties;
+UNWIND [{start: {uuid:"ctw/networkslicesubnet/21318"}, end: {uuid:"ctw/networkslicesubnet/21321"}, properties:{abstractAssociation:"encompassesLogicalPartitions"}}, {start: {uuid:"ctw/networkslicesubnet/21318"}, end: {uuid:"ctw/networkslicesubnet/21322"}, properties:{abstractAssociation:"encompassesLogicalPartitions"}}, {start: {uuid:"ctw/networkslicesubnet/21320"}, end: {uuid:"ctw/networkslicesubnet/21325"}, properties:{abstractAssociation:"encompassesLogicalPartitions"}}, {start: {uuid:"ctw/networkslicesubnet/21320"}, end: {uuid:"ctw/networkslicesubnet/21326"}, properties:{abstractAssociation:"encompassesLogicalPartitions"}}, {start: {uuid:"ctw/networkslicesubnet/21320"}, end: {uuid:"ctw/networkslicesubnet/21327"}, properties:{abstractAssociation:"encompassesLogicalPartitions"}}, {start: {uuid:"ctw/networkslicesubnet/21319"}, end: {uuid:"ctw/networkslicesubnet/21324"}, properties:{abstractAssociation:"encompassesLogicalPartitions"}}, {start: {uuid:"ctw/networkslicesubnet/21319"}, end: {uuid:"ctw/networkslicesubnet/21323"}, properties:{abstractAssociation:"encompassesLogicalPartitions"}}] AS row
+MATCH (start:networkslicesubnet{uuid: row.start.uuid})
+MATCH (end:networkslicesubnet{uuid: row.end.uuid})
+CREATE (start)-[r:networkSliceSubnet_to_networkSliceSubnet]->(end) SET r += row.properties;
+UNWIND [{start: {uuid:"ctw/networkslicesubnet/21322"}, end: {uuid:"ctw/upf/21333"}, properties:{abstractAssociation:"encompassesWirelessNetFunctions"}}, {start: {uuid:"ctw/networkslicesubnet/21324"}, end: {uuid:"ctw/upf/21334"}, properties:{abstractAssociation:"encompassesWirelessNetFunctions"}}, {start: {uuid:"ctw/networkslicesubnet/21327"}, end: {uuid:"ctw/upf/21335"}, properties:{abstractAssociation:"encompassesWirelessNetFunctions"}}] AS row
+MATCH (start:networkslicesubnet{uuid: row.start.uuid})
+MATCH (end:upf{uuid: row.end.uuid})
+CREATE (start)-[r:networkSliceSubnets_to_wirelessNetFunction]->(end) SET r += row.properties;
+UNWIND [{start: {uuid:"ctw/networkslicesubnet/21322"}, end: {uuid:"ctw/smf/21330"}, properties:{abstractAssociation:"encompassesWirelessNetFunctions"}}, {start: {uuid:"ctw/networkslicesubnet/21324"}, end: {uuid:"ctw/smf/21331"}, properties:{abstractAssociation:"encompassesWirelessNetFunctions"}}, {start: {uuid:"ctw/networkslicesubnet/21326"}, end: {uuid:"ctw/smf/21332"}, properties:{abstractAssociation:"encompassesWirelessNetFunctions"}}] AS row
+MATCH (start:networkslicesubnet{uuid: row.start.uuid})
+MATCH (end:smf{uuid: row.end.uuid})
+CREATE (start)-[r:networkSliceSubnets_to_wirelessNetFunction]->(end) SET r += row.properties;
+:commit

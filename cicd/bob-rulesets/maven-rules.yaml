@@ -1,0 +1,48 @@
+modelVersion: 2.0
+
+
+import:
+  images: docker-images.yaml
+
+docker-images:
+  - maven-builder: ${maven-image-builder}
+
+properties:
+  - maven-image-builder: ${env.images.IMAGE_JAVA17MVNBUILDER}
+  - maven-docker-flags:
+        ${maven-extra-docker-flags}
+        --volume ${env.M2_PATH}:${maven-user-home}/.m2
+        --env HOME=${maven-user-home}
+        --env MAVEN_OPTS=" -Duser.home=${maven-user-home} ${env.MAVEN_OPTS} ${maven-extra-opts} "
+        --env MAVEN_ARGS=" ${env.MAVEN_ARGS} ${maven-args-env} "
+  - maven-user-home: ${env.HOME}
+
+  - maven-logging-args: "-Dorg.slf4j.simpleLogger.defaultLogLevel=${maven-log-level} -Dorg.slf4j.simpleLogger.showThreadName=true"
+  - maven-log-level: "warn"
+
+  - maven-extra-docker-flags: ""
+  - maven-extra-opts: ""
+  - maven-extra-args: ""
+
+  - maven-exec: "mvn"
+  - maven-args: ""
+  - maven-args-env: ""
+
+  - maven-cmd: "${maven-exec} ${maven-args} --batch-mode ${maven-logging-args} ${maven-extra-args}"
+
+
+env:
+  - HOME
+  - M2_PATH (default=${env.HOME}/.m2)
+  - MAVEN_OPTS (default=)
+  - MAVEN_ARGS (default=)
+
+
+rules:
+  mvn:
+    - task: maven
+      docker-image: maven-builder
+      docker-in-docker: socket
+      docker-flags:
+        - ${maven-docker-flags}
+      cmd: ${maven-cmd}

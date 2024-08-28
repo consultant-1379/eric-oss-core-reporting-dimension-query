@@ -1,0 +1,7 @@
+{
+  "type": null,
+  "title": "Error occurred MandatoryParameterException",
+  "status": 400,
+  "detail": "Missing Mandatory Parameter in inputsFields with format 'name': <value>. The missing parameter(s): [nodeFDN]",
+  "instance": null
+}

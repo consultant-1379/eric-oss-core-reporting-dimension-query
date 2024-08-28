@@ -1,0 +1,273 @@
+#
+# COPYRIGHT Ericsson 2021
+#
+#
+#
+# The copyright to the computer program(s) herein is the property of
+#
+# Ericsson Inc. The programs may be used and/or copied only with written
+#
+# permission from Ericsson Inc. or in accordance with the terms and
+#
+# conditions stipulated in the agreement/contract under which the
+#
+# program(s) have been supplied.
+#
+
+# Default values for eric-oss-core-reporting-dimension-query.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+#global:
+#  timezone: UTC
+#  registry:
+#    url: armdocker.rnd.ericsson.se
+#    imagePullPolicy: IfNotPresent
+#  #Secret must be manually created in the namespace, no default value
+#  pullSecret: eric-adp-example-secret
+#  fsGroup:
+#    manual: 10000
+#    namespace: true
+#  # The IP family the service belongs to when service.type is set to ClusterIP.
+#  # Options are: IPv4, IPv6
+#  internalIPFamily:
+#  security:
+#    policyBinding:
+#      create: true
+#    policyReferenceMap:
+#      default-restricted-security-policy: "<restricted security policy at customer deployment>"
+#    tls:
+#      enabled: false
+
+replicaCount: 2
+
+podDisruptionBudget:
+  # Minimum number/percentage of Pods that must remain available during the planned disruption.
+  # Value can be expressed as an integer or as a percentage. When specified as a percentage of the Pods,
+  # if it does not map to an exact number, Kubernetes rounds up to the nearest integer.
+  # minAvailable: 2 # example value for 2 pods defined as integer
+  minAvailable: "40%"
+
+updateStrategy:
+  type: RollingUpdate
+  rollingUpdate:
+    maxSurge: 1
+    maxUnavailable: 0
+
+#Empty labels list for application deployment engineer to add more labels (In Compliance with DR-D1121-068).
+labels: {}
+
+imageCredentials:
+  repoPath: # overrides global registry url
+  eric-oss-core-reporting-dimension-query:
+    repoPath: # see default in eric-product-info.yaml
+    registry: {}
+      # overrides global registry url
+      # url:
+      #- Secret must be manually created in the namespace, no default value
+    # pullSecret: REPO_SECRET
+
+imagePullSecrets: []
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+annotations: {}
+
+service:
+  type: ClusterIP
+  port: 8080
+  tls:
+    port: 8443 # will be used if tls enabled
+
+ingress:
+  enabled: false
+  ingressClass: OAM-IngressClass
+  hosts:
+    - host: chart-example.local
+      paths: [/]
+
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+eric-pm-server:
+  rbac:
+    appMonitoring:
+      enabled: true
+
+prometheus:
+  path: /actuator/prometheus
+  scrape: true
+
+terminationGracePeriodSeconds: 30
+
+resources:
+  eric-oss-core-reporting-dimension-query:
+    requests:
+      memory: 4Gi
+      cpu: 400m
+      ephemeral-storage: ""
+    limits:
+      memory: 4Gi
+      cpu: 400m
+      ephemeral-storage: ""
+    jvm:
+      initialMemoryAllocationPercentage: 50
+      smallMemoryAllocationMaxPercentage: 70
+      largeMemoryAllocationMaxPercentage: 50
+
+autoScaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+topologySpreadConstraints:
+  deployment: []
+  test: []
+
+tolerations:
+  - key: node.kubernetes.io/not-ready
+    operator: Exists
+    effect: NoExecute
+    tolerationSeconds: 0
+  - key: node.kubernetes.io/unreachable
+    operator: Exists
+    effect: NoExecute
+    tolerationSeconds: 0
+
+affinity:
+  podAntiAffinity: "soft"
+  topologyKey: "kubernetes.io/hostname"
+
+probes:
+  eric-oss-core-reporting-dimension-query:
+    livenessProbe:
+      failureThreshold: 3
+      initialDelaySeconds: 120
+      periodSeconds: 10
+      timeoutSeconds: 10
+    readinessProbe:
+      failureThreshold: 3
+      initialDelaySeconds: 60
+      periodSeconds: 10
+      timeoutSeconds: 10
+
+podPriority:
+  eric-oss-core-reporting-dimension-query:
+    priorityClassName: ""
+# choice='unconfined, runtime/default, localhost. runtime/default, ""' [ default= "" ]
+# Configuration of AppArmor profile type. The following values are possible:
+# unconfined  - Indicates that there is no profile loaded.
+# runtime/default - Applies the default profile of the container engine.
+# localhost   - Applies a specific profile loaded on the host
+# "" - The appArmor profile is not set in the Helm chart.
+appArmorProfile:
+  type: ""
+seccompProfile:
+  type: ""
+
+neo4j:
+  enabled: false
+  query:
+    path: /config/queries
+  uri: neo4j://eric-bos-neo4j-graphdb:7687
+  database: cardqdb
+  secret:
+    secretName: "eric-bos-assurance-topology-notification-secret"
+    usernameKey: "reader-name"
+    secretKey: "reader-pass"
+  pool:
+    metricsEnabled: true
+    connectionAcquisitionTimeout: 60
+    maxConnectionLifetime: 3600
+    maxConnectionPoolSize: 100
+    logLeakedSessions: false
+  config:
+    connectionTimeout: 30
+    maxTransactionRetryTime: 30
+  retry:
+    delay: 20000
+    maxAttempts: 5
+
+cts:
+  enabled: true
+#  tls:
+#    enabled: false # When CTS TLS enabled then CARDQ will call cts on https request
+#  url:
+#    host: eric-oss-cmn-topology-svc-core.{{ .Release.Namespace }} # Default
+#    port: 8080 # Default
+  secret:
+    name: eric-oss-cmn-topology-svc-core-adminuser-credentials
+    userKey: "technicalUser.name"
+    passwordKey: "technicalUser.password"
+  database:
+    name: eai_install
+    host: localhost
+  retry:
+    delay: 20000
+    maxAttempts: 5
+
+cache:
+  expiryTimeSeconds: 900
+  maxEntries: 5000
+
+# Set to Default local streamingMethod
+# Can be one of the following:
+#   direct: Direct streaming to the Log Aggregator (Log Transformer).
+#   indirect: Stdout to infrastructure logging framework in json format.
+#   dual: Stdout to infrastructure logging framework and direct streaming to Log Aggregator.
+#   null: null or absent parameter the streaming method is determined by global.log.streamingMethod
+#   plain: Stdout to infrastructure logging framework in plain text format.
+log:
+  streamingMethod: null
+  control:
+    enabled: true
+    file: /config/logcontrol.json
+    severity: info  # initial log control severity level, can be updated at runtime updating configmap values
+#  tls:
+#    enabled: false # https log appender used when tls in enabled, default is false
+
+# Cardq security.tls takes precedence over global.security.tls if configured, by default it is false
+#security:
+#  tls:
+#    enabled: false
+#    port: 8443
+
+# Observability configuration adds URI tags to client requests for http_client_requests_* metrics
+# 2 options available
+# complete: add-query enabled -> URI with path and query (uri="/path?key=value")
+# partial:  add-query disabled -> URI with path only (uri="/path") (DEFAULT)
+# When Observability client configuration is disabled (observability.client.enabled=false), then URI path tag in the metric becomes "none". (uri="none")
+observability:
+  client:
+    enabled: true
+    add-query: false
+
+# TLS keystore password and key password are provided by a secret.
+# If not specified, the secret will be created on deployment.
+# If specified, it must be created prior to deploying this service.
+keystore:
+  credentials:
+    secret:
+    passwordKey: password
+    keyPasswordKey: keyPassword
+
+# Configuration options for the Secret resource
+secret:
+  # Specify the resource policy for managing the Secret:
+  # - "keep": Retain the Secret even if the Helm release is deleted (default).
+  # - "delete": Delete the Secret when the Helm release is deleted.
+  keystore:
+    resourcePolicy: keep

@@ -1,0 +1,24 @@
+{
+  "fields": [
+    [
+      {
+        "name": "nssi",
+        "value": "NetworkSliceSubnet:NSSI-A11"
+      },
+      {
+        "name": "nsi",
+        "value": "NetworkSlice:NSI-A"
+      }
+    ],
+    [
+      {
+        "name": "nssi",
+        "value": "NetworkSliceSubnet:NSSI-A1"
+      },
+      {
+        "name": "nsi",
+        "value": "NetworkSlice:NSI-A"
+      }
+    ]
+  ]
+}

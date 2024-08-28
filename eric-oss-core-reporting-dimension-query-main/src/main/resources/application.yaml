@@ -1,0 +1,171 @@
+#
+# COPYRIGHT Ericsson 2021
+#
+#
+#
+# The copyright to the computer program(s) herein is the property of
+#
+# Ericsson Inc. The programs may be used and/or copied only with written
+#
+# permission from Ericsson Inc. or in accordance with the terms and
+#
+# conditions stipulated in the agreement/contract under which the
+#
+# program(s) have been supplied.
+#
+
+#Graceful shutdown
+server:
+  shutdown: graceful
+
+#Metrics related configurations
+management:
+  endpoint:
+    metrics:
+      enabled: "true"
+    prometheus:
+      enabled: "true"
+  endpoints:
+    web:
+      exposure:
+        include: health, info, loggers, metrics, prometheus
+  metrics:
+    web:
+      server:
+        auto-time-requests: "true"
+  prometheus:
+    metrics:
+      export:
+        enabled: "true"
+  info:
+    env:
+      enabled: true
+  # Disable neo4j health indicator
+  health:
+    neo4j:
+      enabled: false
+
+# Remove H2 from compile scope
+spring:
+  # graceful shutdown wait period period for serving in-flight requests
+  lifecycle:
+    timeout-per-shutdown-phase: ${GRACEFUL_SHUTDOWN_TIMEOUT:30s}
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+  neo4j:
+    uri: ${NEO4J_URI:neo4j://eric-bos-neo4j-graphdb:7687}
+    security:
+      trustedCertAlias: root-cacertbundle
+    authentication:
+      username: ${NEO4J_AUTHENTICATION_USERNAME}
+      password: ${NEO4J_AUTHENTICATION_PASSWORD}
+    pool:
+      metrics-enabled: ${NEO4J_POOL_METRICS_ENABLED:true}
+      connection-acquisition-timeout: ${NEO4J_POOL_CONNECTION_ACQUISITION_TIMEOUT:60}
+      max-connection-lifetime: ${NEO4J_POOL_MAX_CONNECTION_LIFETIME:3600}
+      max-connection-pool-size: ${NEO4J_POOL_MAX_CONNECTION_POOL_SIZE:100}
+      log-leaked-sessions: ${NEO4J_POOL_LOG_LEAKED_SESSIONS:false}
+    config:
+      connection-timeout: ${NEO4J_CONFIG_CONNECTION_TIMEOUT:30}
+      max-transaction-retry-time: ${NEO4J_CONFIG_MAX_TRANSACTION_RETRY_TIME:30}
+    retry:
+      delay: ${NEO4J_RETRY_DELAY:20000}
+      maxAttempts: ${NEO4J_RETRY_MAX_ATTEMPTS:5}
+
+  data:
+    neo4j:
+      database: ${NEO4J_DATABASE_NAME:neo4j}
+
+endpoints:
+  health:
+    sensitive: "false"
+
+info:
+  app:
+    name: '@name@'
+    description: 5G Core Analytics Reporting Dimensioning Query
+    version: '@version@'
+    legal: |
+      COPYRIGHT Ericsson 2021
+      The copyright to the computer program(s) herein is the property of Ericsson Inc. The programs may be used and/or copied only with written 
+      permission from Ericsson Inc. or in accordance with the terms and conditions stipulated in the agreement/contract under which the program(s)
+      have been supplied.
+
+logging:
+  config: ${LOGBACK_CONFIG_FILE:classpath:logback-json.xml}
+
+ericsson:
+  logging:
+    runtime-level-control:
+      enabled: ${RUN_TIME_LEVEL_CONTROL:true}
+
+stubrunner:
+  username: ${SELI_ARTIFACTORY_REPO_USER}
+  password: ${SELI_ARTIFACTORY_REPO_PASS}
+
+ath:
+  enabled: ${ATH_ENABLED:false}
+  query:
+    path: ${ATH_QUERY_PATH:/config/queries}
+
+cts:
+  enabled: ${CTS_ENABLED:true}
+  url: ${CTS_URL:http://eric-oss-cmn-topology-svc-core:8080}
+  user: ${CTS_USER:sysadm}
+  password: ${CTS_PASSWORD:}
+  databaseName: ${CTS_DBNAME:eai_install}
+  databaseHost: ${CTS_DBHOST:localhost}
+  retry:
+    delay: ${CTS_RETRY_DELAY:20000}
+    maxAttempts: ${CTS_RETRY_MAX_ATTEMPTS:5}
+  tls:
+    enabled: ${CTS_TLS_ENABLED:false}
+
+#Cache related configurations
+cache:
+  expiryTimeSeconds: ${CACHE_EXPIRY_TIME_SECONDS:900}
+  maxEntries: ${CACHE_MAX_ENTRIES:5000}
+
+# Default port is set to 8080
+# When tls enabled setting http port enables both HTTP and HTTPS schemes for Tomcat
+#server:
+#  port: 8080
+
+security:
+  tls:
+    enabled: ${TLS_ENABLED:false}
+    port: ${HTTPS_PORT:8443}
+    #  NONE: Client authentication is not wanted.
+    #  WANT: Client authentication is wanted but not mandatory.
+    #  NEED: Client authentication is needed and mandatory.
+    #  clientAuth: NEED # by default client auth is needed and mandatory for mTLS
+    keystoreType: pkcs12
+
+# Currently,for adp-certificate.strategy only supported value is external-tools which uses openssl binaries
+# To test locally, openssl should be installed in the OS
+adp-certificate:
+  strategy: external-tools
+  discovery:
+    root-read-path: ${TLS_READ_ROOT_PATH}
+    root-write-path: ${TLS_WRITE_ROOT_PATH}
+    keystore-relative-dir: ${KEYSTORE_REL_DIR}
+    truststore-relative-dir: ${TRUSTSTORE_REL_DIR}
+    keyExtensionFilter: "*.pem, *.crt"
+    caExtensionFilter: "*.pem, *.crt"
+    password: ${TLS_KEYSTORE_PASSWORD}
+    keyPassword: ${TLS_KEYSTORE_KEY_PASSWORD}
+
+# Observability configuration adds URI tags to client requests for http_client_requests_* metrics
+# 2 options available
+# complete: add-query enabled -> URI with path and query (uri="/path?key=value")
+# partial:  add-query disabled -> URI with path only (uri="/path") (DEFAULT)
+# When Observability client configuration is disabled (observability.client.enabled=false), then URI path tag in the metric becomes "none". (uri="none")
+#
+# NOTE: Marking metrics with complete url path option might lead to performance issues when observing metrics data since this option will create a new metric entry based on the query options.
+# It might have cardinality explosion issues based on the given complexity of client request urls, especially with complex queries. (Each variable in request queries will generate a new metric entry.)
+# https://github.com/spring-projects/spring-boot/issues/22832
+observability:
+  client:
+    enabled: ${OBS_CLIENT_ENABLED:true}
+    add-query: ${OBS_CLIENT_ADD_QUERY:false}

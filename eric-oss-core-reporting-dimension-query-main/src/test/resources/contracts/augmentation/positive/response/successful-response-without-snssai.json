@@ -1,0 +1,76 @@
+{
+  "fields": [
+    [
+      {
+        "name": "nssi",
+        "value": "NetworkSliceSubnet:NSSI-A11"
+      },
+      {
+        "name": "nsi",
+        "value": "NetworkSlice:NSI-A"
+      },
+      {
+        "name": "site",
+        "value": "GeographicSite:DataCenter1"
+      },
+      {
+        "name": "plmnId",
+        "value": "100-101"
+      }
+    ],
+    [
+      {
+        "name": "nssi",
+        "value": "NetworkSliceSubnet:NSSI-A1"
+      },
+      {
+        "name": "nsi",
+        "value": "NetworkSlice:NSI-A"
+      },
+      {
+        "name": "site",
+        "value": "GeographicSite:DataCenter1"
+      },
+      {
+        "name": "plmnId",
+        "value": "100-101"
+      }
+    ],
+    [
+      {
+        "name": "nssi",
+        "value": "NetworkSliceSubnet:NSSI-B11"
+      },
+      {
+        "name": "nsi",
+        "value": "NetworkSlice:NSI-B"
+      },
+      {
+        "name": "site",
+        "value": "GeographicSite:DataCenter1"
+      },
+      {
+        "name": "plmnId",
+        "value": "100-101"
+      }
+    ],
+    [
+      {
+        "name": "nssi",
+        "value": "NetworkSliceSubnet:NSSI-B1"
+      },
+      {
+        "name": "nsi",
+        "value": "NetworkSlice:NSI-B"
+      },
+      {
+        "name": "site",
+        "value": "GeographicSite:DataCenter1"
+      },
+      {
+        "name": "plmnId",
+        "value": "100-101"
+      }
+    ]
+  ]
+}

@@ -1,0 +1,199 @@
+[
+  {
+    "type": "ctw/nrcell",
+    "id": 2009,
+    "href": "ctw/nrcell/2009",
+    "externalId": "ENMRAN/NRCellDU/NR01gNodeBRadio00013/NR01gNodeBRadio00013/1/NR01gNodeBRadio00013-PLM",
+    "name": "NR01gNodeBRadio00013-PLM",
+    "createdOn": "2023-04-24T12:57:34.725Z",
+    "createdBy": "sysadm",
+    "status": "operating",
+    "lastModifiedOn": "2023-04-24T23:23:38.806Z",
+    "lastModifiedBy": "sysadm",
+    "versionNumber": 2,
+    "revisionNumber": 1,
+    "administrativeState": "UNLOCKED",
+    "operationalState": "DISABLED",
+    "revisionGroupKey": {
+      "type": "revisionGroupKey",
+      "keyValue": 26881
+    },
+    "localCellIdNci": 213031,
+    "trackingAreaCode": 999,
+    "cellResourceMappingId": "",
+    "key": {
+      "type": "ctw/nrcellKey",
+      "keyValue": 2009
+    },
+    "plmnInfoList": [
+      {
+        "mode": "LOADED",
+        "value": {
+          "type": "ctw/plmninfo",
+          "id": 304,
+          "href": "ctw/plmninfo/304",
+          "plmn_mcc": 128,
+          "plmn_mnc": "49",
+          "revisionNumber": 1,
+          "lastModifiedOn": "2023-04-19T11:50:23.627Z",
+          "lastModifiedBy": "sysadm",
+          "createdOn": "2023-04-19T11:50:23.627Z",
+          "createdBy": "sysadm",
+          "name": "PLMNINFO/128/49/10/1",
+          "status": "operating",
+          "versionNumber": 1,
+          "revisionGroupKey": {
+            "type": "revisionGroupKey",
+            "keyValue": 22984
+          },
+          "key": {
+            "type": "ctw/plmninfoKey",
+            "keyValue": 304
+          },
+          "sNSSAI_SST": 1,
+          "sNSSAI_SD": "10"
+        }
+      },
+      {
+        "mode": "LOADED",
+        "value": {
+          "type": "ctw/plmninfo",
+          "id": 305,
+          "href": "ctw/plmninfo/305",
+          "plmn_mcc": 128,
+          "plmn_mnc": "49",
+          "revisionNumber": 1,
+          "lastModifiedOn": "2023-04-19T11:50:23.632Z",
+          "lastModifiedBy": "sysadm",
+          "createdOn": "2023-04-19T11:50:23.632Z",
+          "createdBy": "sysadm",
+          "name": "PLMNINFO/128/49/11/1",
+          "status": "operating",
+          "versionNumber": 1,
+          "revisionGroupKey": {
+            "type": "revisionGroupKey",
+            "keyValue": 22985
+          },
+          "key": {
+            "type": "ctw/plmninfoKey",
+            "keyValue": 305
+          },
+          "sNSSAI_SST": 1,
+          "sNSSAI_SD": "11"
+        }
+      },
+      {
+        "mode": "LOADED",
+        "value": {
+          "type": "ctw/plmninfo",
+          "id": 306,
+          "href": "ctw/plmninfo/306",
+          "plmn_mcc": 129,
+          "plmn_mnc": "50",
+          "revisionNumber": 1,
+          "lastModifiedOn": "2023-04-19T11:50:23.642Z",
+          "lastModifiedBy": "sysadm",
+          "createdOn": "2023-04-19T11:50:23.642Z",
+          "createdBy": "sysadm",
+          "name": "PLMNINFO/129/50/10/1",
+          "status": "operating",
+          "versionNumber": 1,
+          "revisionGroupKey": {
+            "type": "revisionGroupKey",
+            "keyValue": 22986
+          },
+          "key": {
+            "type": "ctw/plmninfoKey",
+            "keyValue": 306
+          },
+          "sNSSAI_SST": 1,
+          "sNSSAI_SD": "10"
+        }
+      },
+      {
+        "mode": "LOADED",
+        "value": {
+          "type": "ctw/plmninfo",
+          "id": 307,
+          "href": "ctw/plmninfo/307",
+          "plmn_mcc": 129,
+          "plmn_mnc": "50",
+          "revisionNumber": 1,
+          "lastModifiedOn": "2023-04-19T11:50:23.647Z",
+          "lastModifiedBy": "sysadm",
+          "createdOn": "2023-04-19T11:50:23.647Z",
+          "createdBy": "sysadm",
+          "name": "PLMNINFO/129/50/11/1",
+          "status": "operating",
+          "versionNumber": 1,
+          "revisionGroupKey": {
+            "type": "revisionGroupKey",
+            "keyValue": 22987
+          },
+          "key": {
+            "type": "ctw/plmninfoKey",
+            "keyValue": 307
+          },
+          "sNSSAI_SST": 1,
+          "sNSSAI_SD": "11"
+        }
+      },
+      {
+        "mode": "LOADED",
+        "value": {
+          "type": "ctw/plmninfo",
+          "id": 308,
+          "href": "ctw/plmninfo/308",
+          "plmn_mcc": 130,
+          "plmn_mnc": "51",
+          "revisionNumber": 1,
+          "lastModifiedOn": "2023-04-19T11:50:23.659Z",
+          "lastModifiedBy": "sysadm",
+          "createdOn": "2023-04-19T11:50:23.659Z",
+          "createdBy": "sysadm",
+          "name": "PLMNINFO/130/51/10/1",
+          "status": "operating",
+          "versionNumber": 1,
+          "revisionGroupKey": {
+            "type": "revisionGroupKey",
+            "keyValue": 22988
+          },
+          "key": {
+            "type": "ctw/plmninfoKey",
+            "keyValue": 308
+          },
+          "sNSSAI_SST": 1,
+          "sNSSAI_SD": "10"
+        }
+      },
+      {
+        "mode": "LOADED",
+        "value": {
+          "type": "ctw/plmninfo",
+          "id": 309,
+          "href": "ctw/plmninfo/309",
+          "plmn_mcc": 130,
+          "plmn_mnc": "51",
+          "revisionNumber": 1,
+          "lastModifiedOn": "2023-04-19T11:50:23.663Z",
+          "lastModifiedBy": "sysadm",
+          "createdOn": "2023-04-19T11:50:23.663Z",
+          "createdBy": "sysadm",
+          "name": "PLMNINFO/130/51/11/1",
+          "status": "operating",
+          "versionNumber": 1,
+          "revisionGroupKey": {
+            "type": "revisionGroupKey",
+            "keyValue": 22989
+          },
+          "key": {
+            "type": "ctw/plmninfoKey",
+            "keyValue": 309
+          },
+          "sNSSAI_SST": 1,
+          "sNSSAI_SD": "11"
+        }
+      }
+    ]
+  }
+]

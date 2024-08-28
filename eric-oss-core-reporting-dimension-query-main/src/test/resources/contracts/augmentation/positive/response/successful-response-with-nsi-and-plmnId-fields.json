@@ -1,0 +1,14 @@
+{
+  "fields": [
+    [
+      {
+        "name": "nsi",
+        "value": "NetworkSlice:NSI-A"
+      },
+      {
+        "name": "plmnId",
+        "value": "100-101"
+      }
+    ]
+  ]
+}

@@ -1,0 +1,29 @@
+[
+  {
+    "type": "ctw/nrcell",
+    "id": 81,
+    "href": "ctw/nrcell/81",
+    "externalId": "SubNetwork=cycEdnsGnbdu_A,ManagedElement=cycEdnsGnbdu_A,GNBDUFunction=1,NRCellDU=cycEdnsNrCellA_3",
+    "name": "cycEdnsNrCellA_3",
+    "createdOn": "2023-03-14T13:03:16.734Z",
+    "createdBy": "sysadm",
+    "status": "operating",
+    "lastModifiedOn": "2023-04-21T19:05:53.865Z",
+    "lastModifiedBy": "sysadm",
+    "versionNumber": 110,
+    "revisionNumber": 1,
+    "administrativeState": "UNLOCKED",
+    "operationalState": "ENABLED",
+    "revisionGroupKey": {
+      "type": "revisionGroupKey",
+      "keyValue": 1080
+    },
+    "localCellIdNci": 732123002,
+    "trackingAreaCode": 732763,
+    "cellResourceMappingId": "1",
+    "key": {
+      "type": "ctw/nrcellKey",
+      "keyValue": 81
+    }
+  }
+]

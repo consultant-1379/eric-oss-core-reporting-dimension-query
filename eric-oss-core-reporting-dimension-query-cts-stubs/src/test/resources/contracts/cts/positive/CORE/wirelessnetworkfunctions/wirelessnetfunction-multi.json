@@ -1,0 +1,248 @@
+[
+  {
+    "type": "ctw/smf",
+    "id": 239,
+    "href": "ctw/smf/239",
+    "externalId": "PCC00020-SMF",
+    "name": "WirelessNetworkFunction:PCC00020-SMF",
+    "comments": "ManualDataSet-For-ESOA1185",
+    "revisionNumber": 1,
+    "createdOn": "2023-11-17T19:48:47.186Z",
+    "createdBy": "sysadm",
+    "status": "operating",
+    "lastModifiedOn": "2023-11-17T19:48:47.186Z",
+    "lastModifiedBy": "sysadm",
+    "revisionGroupKey": {
+      "type": "revisionGroupKey",
+      "keyValue": 429
+    },
+    "versionNumber": 1,
+    "key": {
+      "type": "ctw/smfKey",
+      "keyValue": 239
+    },
+    "geographicSite": [
+      {
+        "mode": "LOADED",
+        "value": {
+          "type": "ctg/geographicsite",
+          "id": 19,
+          "href": "ctg/geographicsite/19",
+          "externalId": "DataCenter1",
+          "status": "operating",
+          "lastModifiedOn": "2023-11-17T19:48:46.865Z",
+          "lastModifiedBy": "sysadm",
+          "name": "GeographicSite:DataCenter1",
+          "comments": "ManualDataSet-For-ESOA1185",
+          "createdOn": "2023-11-17T19:48:46.865Z",
+          "createdBy": "sysadm",
+          "siteId": "1",
+          "_type": "Data Center",
+          "revisionNumber": 1,
+          "versionNumber": 1,
+          "revisionGroupKey": {
+            "type": "revisionGroupKey",
+            "keyValue": 394
+          },
+          "key": {
+            "type": "ctg/geographicsiteKey",
+            "keyValue": 19
+          }
+        }
+      }
+    ],
+    "supportingNetSliceSubnets": [
+      {
+        "mode": "LOADED",
+        "value": {
+          "type": "ctw/networkslicesubnet",
+          "id": 231,
+          "href": "ctw/networkslicesubnet/231",
+          "externalId": "NSSI-A12",
+          "name": "NetworkSliceSubnet:NSSI-A12",
+          "comments": "ManualDataSet-For-ESOA1185",
+          "_id": 12,
+          "revisionNumber": 1,
+          "createdOn": "2023-11-17T19:48:47.029Z",
+          "createdBy": "sysadm",
+          "status": "operating",
+          "lastModifiedOn": "2023-11-17T19:48:47.029Z",
+          "lastModifiedBy": "sysadm",
+          "versionNumber": 1,
+          "revisionGroupKey": {
+            "type": "revisionGroupKey",
+            "keyValue": 414
+          },
+          "key": {
+            "type": "ctw/networkslicesubnetKey",
+            "keyValue": 231
+          }
+        }
+      }
+    ]
+  },
+  {
+    "type": "ctw/smf",
+    "id": 240,
+    "href": "ctw/smf/240",
+    "externalId": "PCC00021-SMF",
+    "name": "WirelessNetworkFunction:PCC00021-SMF",
+    "comments": "ManualDataSet-For-ESOA1185",
+    "revisionNumber": 1,
+    "createdOn": "2023-11-17T19:48:47.203Z",
+    "createdBy": "sysadm",
+    "status": "operating",
+    "lastModifiedOn": "2023-11-17T19:48:47.203Z",
+    "lastModifiedBy": "sysadm",
+    "revisionGroupKey": {
+      "type": "revisionGroupKey",
+      "keyValue": 430
+    },
+    "versionNumber": 1,
+    "key": {
+      "type": "ctw/smfKey",
+      "keyValue": 240
+    },
+    "geographicSite": [
+      {
+        "mode": "LOADED",
+        "value": {
+          "type": "ctg/geographicsite",
+          "id": 20,
+          "href": "ctg/geographicsite/20",
+          "externalId": "DataCenter2",
+          "status": "operating",
+          "lastModifiedOn": "2023-11-17T19:48:46.870Z",
+          "lastModifiedBy": "sysadm",
+          "name": "GeographicSite:DataCenter2",
+          "comments": "ManualDataSet-For-ESOA1185",
+          "createdOn": "2023-11-17T19:48:46.870Z",
+          "createdBy": "sysadm",
+          "siteId": "2",
+          "_type": "Data Center",
+          "revisionNumber": 1,
+          "versionNumber": 1,
+          "revisionGroupKey": {
+            "type": "revisionGroupKey",
+            "keyValue": 395
+          },
+          "key": {
+            "type": "ctg/geographicsiteKey",
+            "keyValue": 20
+          }
+        }
+      }
+    ],
+    "supportingNetSliceSubnets": [
+      {
+        "mode": "LOADED",
+        "value": {
+          "type": "ctw/networkslicesubnet",
+          "id": 233,
+          "href": "ctw/networkslicesubnet/233",
+          "externalId": "NSSI-B12",
+          "name": "NetworkSliceSubnet:NSSI-B12",
+          "comments": "ManualDataSet-For-ESOA1185",
+          "_id": 22,
+          "revisionNumber": 1,
+          "createdOn": "2023-11-17T19:48:47.043Z",
+          "createdBy": "sysadm",
+          "status": "operating",
+          "lastModifiedOn": "2023-11-17T19:48:47.043Z",
+          "lastModifiedBy": "sysadm",
+          "versionNumber": 1,
+          "revisionGroupKey": {
+            "type": "revisionGroupKey",
+            "keyValue": 416
+          },
+          "key": {
+            "type": "ctw/networkslicesubnetKey",
+            "keyValue": 233
+          }
+        }
+      }
+    ]
+  },
+  {
+    "type": "ctw/upf",
+    "id": 243,
+    "href": "ctw/upf/243",
+    "externalId": "PCG00031-UPF",
+    "name": "WirelessNetworkFunction:PCG00031-UPF",
+    "comments": "ManualDataSet-For-ESOA1185",
+    "revisionNumber": 1,
+    "createdOn": "2023-11-17T19:48:47.247Z",
+    "createdBy": "sysadm",
+    "status": "operating",
+    "lastModifiedOn": "2023-11-17T19:48:47.247Z",
+    "lastModifiedBy": "sysadm",
+    "revisionGroupKey": {
+      "type": "revisionGroupKey",
+      "keyValue": 433
+    },
+    "versionNumber": 1,
+    "key": {
+      "type": "ctw/upfKey",
+      "keyValue": 243
+    },
+    "geographicSite": [
+      {
+        "mode": "LOADED",
+        "value": {
+          "type": "ctg/geographicsite",
+          "id": 20,
+          "href": "ctg/geographicsite/20",
+          "externalId": "DataCenter2",
+          "status": "operating",
+          "lastModifiedOn": "2023-11-17T19:48:46.870Z",
+          "lastModifiedBy": "sysadm",
+          "name": "GeographicSite:DataCenter2",
+          "comments": "ManualDataSet-For-ESOA1185",
+          "createdOn": "2023-11-17T19:48:46.870Z",
+          "createdBy": "sysadm",
+          "siteId": "2",
+          "_type": "Data Center",
+          "revisionNumber": 1,
+          "versionNumber": 1,
+          "revisionGroupKey": {
+            "type": "revisionGroupKey",
+            "keyValue": 395
+          },
+          "key": {
+            "type": "ctg/geographicsiteKey",
+            "keyValue": 20
+          }
+        }
+      }
+    ],
+    "supportingNetSliceSubnets": [
+      {
+        "mode": "LOADED",
+        "value": {
+          "type": "ctw/networkslicesubnet",
+          "id": 233,
+          "href": "ctw/networkslicesubnet/233",
+          "externalId": "NSSI-B12",
+          "name": "NetworkSliceSubnet:NSSI-B12",
+          "comments": "ManualDataSet-For-ESOA1185",
+          "_id": 22,
+          "revisionNumber": 1,
+          "createdOn": "2023-11-17T19:48:47.043Z",
+          "createdBy": "sysadm",
+          "status": "operating",
+          "lastModifiedOn": "2023-11-17T19:48:47.043Z",
+          "lastModifiedBy": "sysadm",
+          "versionNumber": 1,
+          "revisionGroupKey": {
+            "type": "revisionGroupKey",
+            "keyValue": 416
+          },
+          "key": {
+            "type": "ctw/networkslicesubnetKey",
+            "keyValue": 233
+          }
+        }
+      }
+    ]
+  }
+]

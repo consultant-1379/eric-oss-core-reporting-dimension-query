@@ -1,0 +1,43 @@
+#
+# COPYRIGHT Ericsson 2021
+#
+#
+#
+# The copyright to the computer program(s) herein is the property of
+#
+# Ericsson Inc. The programs may be used and/or copied only with written
+#
+# permission from Ericsson Inc. or in accordance with the terms and
+#
+# conditions stipulated in the agreement/contract under which the
+#
+# program(s) have been supplied.
+#
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "eric-oss-core-reporting-dimension-query.fullname" . }}
+  labels:
+  {{- include "eric-oss-core-reporting-dimension-query.labels" . | nindent 4 }}
+  annotations:
+  {{- include "eric-oss-core-reporting-dimension-query.annotations-and-prometheus" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.type | quote }}
+  {{- if .Values.global }}
+  {{- if .Values.global.internalIPFamily }}
+  ipFamilies: [{{ .Values.global.internalIPFamily }}]
+  {{- end }}
+  {{- end }}
+  ports:
+    - port: {{ include "eric-oss-core-reporting-dimension-query.service-port" . }}
+      targetPort: {{ include "eric-oss-core-reporting-dimension-query.service-port" . }}
+      protocol: TCP
+    {{- if  (eq (include "eric-oss-core-reporting-dimension-query.cardq-security-tls-enabled" .) "true") }}
+      name: https-tls
+    {{- else }}
+      name: http
+    {{- end }}
+  selector:
+    app.kubernetes.io/name: {{ include "eric-oss-core-reporting-dimension-query.name" . }}
+    app.kubernetes.io/instance: {{ .Release.Name }}

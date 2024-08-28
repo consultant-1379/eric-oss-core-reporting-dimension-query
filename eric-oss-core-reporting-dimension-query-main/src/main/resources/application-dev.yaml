@@ -1,0 +1,74 @@
+#
+# COPYRIGHT Ericsson 2022
+#
+#
+#
+# The copyright to the computer program(s) herein is the property of
+#
+# Ericsson Inc. The programs may be used and/or copied only with written
+#
+# permission from Ericsson Inc. or in accordance with the terms and
+#
+# conditions stipulated in the agreement/contract under which the
+#
+# program(s) have been supplied.
+#
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+logging:
+  config: ${LOGBACK_CONFIG_FILE:classpath:logback-plain-text.xml}
+  level:
+    com.ericsson: debug
+
+ericsson:
+  logging:
+    runtime-level-control:
+      enabled: false
+
+cts:
+  url: http://localhost:10101
+  user: sysadm
+  password:
+  databaseName: eai_install
+  databaseHost: localhost
+  tls:
+    enabled: "false"
+
+ath:
+  query:
+    path: helm/eric-oss-core-reporting-dimension-query/config/queries
+
+stubrunner:
+  stubs-mode: local
+  ids:
+    - com.ericsson.oss.air:eric-oss-core-reporting-dimension-query-cts-stubs::stubs:10101
+    - com.ericsson.oss.air:eric-oss-core-reporting-dimension-query-main::stubs:10102
+
+spring:
+  data:
+    neo4j:
+      database: neo4j
+  neo4j:
+    uri: "neo4j://localhost:7687"
+    security:
+      trustedCertAlias: root-cacert
+    authentication:
+      username: neo4j
+      password: password
+    retry:
+      delay: 200
+      maxAttempts: 2
+
+adp-certificate:
+  discovery:
+    root-read-path: eric-oss-core-reporting-dimension-query-main/src/test/resources/security
+    root-write-path: eric-oss-core-reporting-dimension-query-main/target/security/dev
+    keystore-relative-dir: keystore
+    truststore-relative-dir: truststore
+    password: "password"
+    keyPassword: "keyPassword"

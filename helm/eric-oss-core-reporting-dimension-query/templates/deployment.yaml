@@ -1,0 +1,357 @@
+#
+# COPYRIGHT Ericsson 2021
+#
+#
+#
+# The copyright to the computer program(s) herein is the property of
+#
+# Ericsson Inc. The programs may be used and/or copied only with written
+#
+# permission from Ericsson Inc. or in accordance with the terms and
+#
+# conditions stipulated in the agreement/contract under which the
+#
+# program(s) have been supplied.
+#
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "eric-oss-core-reporting-dimension-query.fullname" . }}
+  labels:
+  {{- include "eric-oss-core-reporting-dimension-query.labels" . | nindent 4 }}
+  annotations:
+  {{- include "eric-oss-core-reporting-dimension-query.annotations-and-prometheus" . | nindent 4 }}
+spec:
+{{- if not .Values.autoScaling.enabled }}
+  replicas: {{ .Values.replicaCount }}
+{{- end }}
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: {{ include "eric-oss-core-reporting-dimension-query.name" . }}
+      app.kubernetes.io/instance: {{ .Release.Name }}
+  strategy:
+    type: {{ .Values.updateStrategy.type | quote }}
+    {{- if and (eq .Values.updateStrategy.type "RollingUpdate") .Values.updateStrategy.rollingUpdate }}
+    rollingUpdate:
+      maxUnavailable: {{ .Values.updateStrategy.rollingUpdate.maxUnavailable }}
+      maxSurge: {{ .Values.updateStrategy.rollingUpdate.maxSurge }}
+    {{- end }}
+  template:
+    metadata:
+      labels:
+      {{- include "eric-oss-core-reporting-dimension-query.labels-and-streamingMethod" . | nindent 8 }}
+      annotations:
+{{- include "eric-oss-core-reporting-dimension-query.annotations-and-prometheus-with-container" . | nindent 8 }}
+    spec:
+      {{- if include "eric-oss-core-reporting-dimension-query.pullSecret" . }}
+      imagePullSecrets:
+        - name: {{ include "eric-oss-core-reporting-dimension-query.pullSecret" . | quote}}
+      {{- end }}
+      serviceAccountName: {{ template "eric-oss-core-reporting-dimension-query.fullname" . }}
+      securityContext:
+        fsGroup: {{ include "eric-oss-core-reporting-dimension-query.fsGroup.coordinated" . }}
+        {{- include "eric-oss-core-reporting-dimension-query.seccomp-profile" . | indent 8 }}
+      volumes:
+        - name: tmp-volume
+          emptyDir: {}
+        - name: config-volume
+          configMap:
+            defaultMode: 493
+            name: {{ include "eric-oss-core-reporting-dimension-query.name" . }}-configmap
+        - name: ath-query-config-volume
+          projected:
+            sources:
+            - configMap:
+                name: {{ include "eric-oss-core-reporting-dimension-query.name" . }}-ath-query-config
+        - name: server-cert-vol
+          secret:
+            optional: true
+            secretName: {{ include "eric-oss-core-reporting-dimension-query.name" . }}-server-cert
+        {{- if (eq (include "eric-oss-core-reporting-dimension-query.cardq-security-tls-enabled" .) "true") }}
+        - name: sip-tls-root-cert-vol
+          secret:
+            optional: true
+            secretName: eric-sec-sip-tls-trusted-root-cert
+        {{- end }}
+        - name: eric-log-transformer
+          secret:
+            optional: true
+            secretName: {{ include "eric-oss-core-reporting-dimension-query.fullname" . }}-logtrans-client-cert
+        - name: pmca
+          secret:
+            optional: true
+            secretName: eric-pm-server-ca
+        - name: cts
+          secret:
+            optional: true
+            secretName: eric-cts-client-cert-secret
+      containers:
+        - name: eric-oss-core-reporting-dimension-query
+          image: {{ template "eric-oss-core-reporting-dimension-query.mainImagePath" . }}
+          imagePullPolicy: {{ template "eric-oss-core-reporting-dimension-query.registryImagePullPolicy" . }}
+          securityContext:
+            allowPrivilegeEscalation: false
+            privileged: false
+            readOnlyRootFilesystem: true
+            runAsNonRoot: true
+            capabilities:
+              drop:
+                - all
+          volumeMounts:
+            - mountPath: /tmp
+              name: tmp-volume
+            - name: config-volume
+              mountPath: /config
+            - name: ath-query-config-volume
+              mountPath: /config/queries
+            - name: server-cert-vol # TODO generate helper for adding certs dynamically, instead of CertificateId.enum
+              mountPath: /run/secrets/certs/server/keystore
+              readOnly: true
+            - name: eric-log-transformer
+              mountPath: /run/secrets/certs/log/keystore
+              readOnly: true
+            - name: pmca
+              mountPath: /run/secrets/certs/pmca/truststore
+              readOnly: true
+            - name: cts
+              mountPath: /run/secrets/certs/cts/keystore
+              readOnly: true
+            {{- if (eq (include "eric-oss-core-reporting-dimension-query.cardq-security-tls-enabled" .) "true") }}
+            - name: sip-tls-root-cert-vol
+              readOnly: true
+              mountPath: /run/secrets/certs/root/truststore
+            {{- end }}
+          ports:
+            {{- if  (eq (include "eric-oss-core-reporting-dimension-query.cardq-security-tls-enabled" .) "true") }}
+            - name: https-tls
+            {{- else }}
+            - name: http
+            {{- end }}
+              containerPort: {{ include "eric-oss-core-reporting-dimension-query.service-port" . }}
+              protocol: TCP
+          livenessProbe:
+          {{- if (index .Values "probes" "eric-oss-core-reporting-dimension-query" "livenessProbe" "initialDelaySeconds") }}
+            {{ print "initialDelaySeconds: " (index .Values "probes" "eric-oss-core-reporting-dimension-query" "livenessProbe" "initialDelaySeconds") }}
+          {{- end }}
+          {{- if (index .Values "probes" "eric-oss-core-reporting-dimension-query" "livenessProbe" "failureThreshold") }}
+            {{ print "failureThreshold: " (index .Values "probes" "eric-oss-core-reporting-dimension-query" "livenessProbe" "failureThreshold") }}
+          {{- end }}
+          {{- if (index .Values "probes" "eric-oss-core-reporting-dimension-query" "livenessProbe" "periodSeconds") }}
+            {{ print "periodSeconds: " (index .Values "probes" "eric-oss-core-reporting-dimension-query" "livenessProbe" "periodSeconds") }}
+          {{- end }}
+          {{- if (index .Values "probes" "eric-oss-core-reporting-dimension-query" "livenessProbe" "timeoutSeconds") }}
+            {{ print "timeoutSeconds: " (index .Values "probes" "eric-oss-core-reporting-dimension-query" "livenessProbe" "timeoutSeconds") }}
+          {{- end }}
+          {{- include "eric-oss-core-reporting-dimension-query.probe-command" . | indent 8 }}
+          readinessProbe:
+          {{- if (index .Values "probes" "eric-oss-core-reporting-dimension-query" "readinessProbe" "initialDelaySeconds") }}
+            {{ print "initialDelaySeconds: " (index .Values "probes" "eric-oss-core-reporting-dimension-query" "readinessProbe" "initialDelaySeconds") }}
+          {{- end }}
+          {{- if (index .Values "probes" "eric-oss-core-reporting-dimension-query" "readinessProbe" "failureThreshold") }}
+            {{ print "failureThreshold: " (index .Values "probes" "eric-oss-core-reporting-dimension-query" "readinessProbe" "failureThreshold") }}
+          {{- end }}
+          {{- if (index .Values "probes" "eric-oss-core-reporting-dimension-query" "readinessProbe" "periodSeconds") }}
+            {{ print "periodSeconds: " (index .Values "probes" "eric-oss-core-reporting-dimension-query" "readinessProbe" "periodSeconds") }}
+          {{- end }}
+          {{- if (index .Values "probes" "eric-oss-core-reporting-dimension-query" "readinessProbe" "timeoutSeconds") }}
+            {{ print "timeoutSeconds: " (index .Values "probes" "eric-oss-core-reporting-dimension-query" "readinessProbe" "timeoutSeconds") }}
+          {{- end }}
+          {{- include "eric-oss-core-reporting-dimension-query.probe-command" . | indent 8 }}
+          env:
+          - name: JAVA_OPTS
+            value: {{ include "eric-oss-core-reporting-dimension-query.jvmHeapSettings" . }}
+          - name: TZ
+            value: {{ template "eric-oss-core-reporting-dimension-query.timezone" . }}
+          - name: SERVICE_ID
+            value: {{ include "eric-oss-core-reporting-dimension-query.name" . }}
+          - name: CTS_TLS_ENABLED
+            value: {{ include "eric-oss-core-reporting-dimension-query.cts-tls-enabled" . | quote }}
+          - name: CTS_URL
+            value: {{ template "eric-oss-core-reporting-dimension-query.cts.endpoint" . }}
+          {{- if and .Values.neo4j.enabled .Values.cts.enabled }}
+            {{- fail "Cannot enable ATH and CTS handler at same time." }}
+          {{- else if not (or .Values.neo4j.enabled .Values.cts.enabled) }}
+            {{- fail "At least one of ath.enabled or cts.enabled must be set to true." }}
+          {{- end }}
+          - name: ATH_ENABLED
+            value: {{ .Values.neo4j.enabled | quote }}
+          - name: ATH_QUERY_PATH
+            value: {{ .Values.neo4j.query.path | quote }}
+          - name: NEO4J_RETRY_DELAY
+            value: {{ .Values.neo4j.retry.delay | quote }}
+          - name: NEO4J_RETRY_MAX_ATTEMPTS
+            value: {{ .Values.neo4j.retry.maxAttempts | quote }}
+          - name: CTS_ENABLED
+            value: {{ .Values.cts.enabled | quote }}
+          - name: CTS_USER
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.cts.secret.name }}
+                key: {{ .Values.cts.secret.userKey }}
+                optional: true
+          - name: CTS_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.cts.secret.name }}
+                key: {{ .Values.cts.secret.passwordKey }}
+                optional: true
+          - name: CTS_DBNAME
+            value: {{ .Values.cts.database.name }}
+          - name: CTS_DBHOST
+            value: {{ .Values.cts.database.host }}
+          - name: CTS_RETRY_DELAY
+            value: {{ .Values.cts.retry.delay | quote }}
+          - name: CTS_RETRY_MAX_ATTEMPTS
+            value: {{ .Values.cts.retry.maxAttempts | quote }}
+          - name: CACHE_EXPIRY_TIME_SECONDS
+            value: {{ .Values.cache.expiryTimeSeconds | quote}}
+          - name: CACHE_MAX_ENTRIES
+            value: {{ .Values.cache.maxEntries | quote}}
+            {{- include "eric-oss-core-reporting-dimension-query.loggingEnv" . | indent 10 }}
+            {{- if  (eq (include "eric-oss-core-reporting-dimension-query.cardq-security-tls-enabled" .) "true") }}
+          - name: HTTPS_PORT
+            value: {{ .Values.service.tls.port | quote}}
+          - name: TLS_ENABLED
+            value: {{ include "eric-oss-core-reporting-dimension-query.cardq-security-tls-enabled" . | quote }}
+          {{- if  (eq (include "eric-oss-core-reporting-dimension-query.cardq-security-tls-enabled" .) "true") }}
+          - name: TLS_READ_ROOT_PATH
+            value: /run/secrets/certs
+          - name: TLS_WRITE_ROOT_PATH
+            value: /tmp
+          - name: KEYSTORE_REL_DIR
+            value: keystore
+          - name: TRUSTSTORE_REL_DIR
+            value: truststore
+          - name: TLS_KEYSTORE_KEY_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.keystore.credentials.secret | default "eric-oss-core-reporting-dimension-query-tls-keystore-secret" }}
+                key: {{ .Values.keystore.credentials.keyPasswordKey }}
+          - name: TLS_KEYSTORE_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.keystore.credentials.secret | default "eric-oss-core-reporting-dimension-query-tls-keystore-secret" }}
+                key: {{ .Values.keystore.credentials.passwordKey }}
+          {{- end }}
+          - name: GRACEFUL_SHUTDOWN_TIMEOUT
+            value: {{ .Values.terminationGracePeriodSeconds | quote}}
+            {{- end }}
+        {{- if  (eq (include "eric-oss-core-reporting-dimension-query.log-tls-enabled" .) "true") }}
+          - name: ERIC_LOG_TRANSFORMER_KEYSTORE
+            value: /tmp/log/keystore.p12
+          - name: ERIC_LOG_TRANSFORMER_KEYSTORE_PW
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.keystore.credentials.secret | default "eric-oss-core-reporting-dimension-query-tls-keystore-secret" }}
+                key: {{ .Values.keystore.credentials.passwordKey }}
+          - name: ERIC_LOG_TRANSFORMER_TRUSTSTORE
+            value: /tmp/root/truststore.p12
+          - name: ERIC_LOG_TRANSFORMER_TRUSTSTORE_PW
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.keystore.credentials.secret | default "eric-oss-core-reporting-dimension-query-tls-keystore-secret" }}
+                key: {{ .Values.keystore.credentials.passwordKey }}
+        {{- end }}
+          - name: RUN_TIME_LEVEL_CONTROL
+            value: {{ .Values.log.control.enabled | quote }}
+          - name: LOG_CTRL_FILE
+            value: {{ .Values.log.control.file | quote }}
+          - name: OBS_CLIENT_ENABLED
+            value: {{ .Values.observability.client.enabled | quote }}
+          - name: OBS_CLIENT_ADD_QUERY
+            value: {{ index .Values.observability.client "add-query" | quote }}
+          - name: NEO4J_URI
+            value: {{ .Values.neo4j.uri | quote }}
+          - name: NEO4J_DATABASE_NAME
+            value: {{ .Values.neo4j.database | quote }}
+          - name: NEO4J_AUTHENTICATION_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.neo4j.secret.secretName | quote }}
+                key: {{ .Values.neo4j.secret.usernameKey | quote }}
+                optional: true
+          - name: NEO4J_AUTHENTICATION_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: {{ .Values.neo4j.secret.secretName | quote }}
+                key: {{ .Values.neo4j.secret.secretKey | quote }}
+                optional: true
+          - name: NEO4J_POOL_METRICS_ENABLED
+            value: {{ .Values.neo4j.pool.metricsEnabled | quote }}
+          - name: NEO4J_POOL_CONNECTION_ACQUISITION_TIMEOUT
+            value: {{ .Values.neo4j.pool.connectionAcquisitionTimeout | quote }}
+          - name: NEO4J_POOL_MAX_CONNECTION_LIFETIME
+            value: {{ .Values.neo4j.pool.maxConnectionLifetime | quote }}
+          - name: NEO4J_POOL_MAX_CONNECTION_POOL_SIZE
+            value: {{ .Values.neo4j.pool.maxConnectionPoolSize | quote }}
+          - name: NEO4J_POOL_LOG_LEAKED_SESSIONS
+            value: {{ .Values.neo4j.pool.logLeakedSessions | quote }}
+          - name: NEO4J_CONFIG_CONNECTION_TIMEOUT
+            value: {{ .Values.neo4j.config.connectionTimeout | quote }}
+          - name: NEO4J_CONFIG_MAX_TRANSACTION_RETRY_TIME
+            value: {{ .Values.neo4j.config.maxTransactionRetryTime | quote }}
+          resources:
+            requests:
+            {{- if (index .Values "resources" "eric-oss-core-reporting-dimension-query" "requests" "cpu") }}
+              cpu: {{ (index .Values "resources" "eric-oss-core-reporting-dimension-query" "requests" "cpu" | quote) }}
+            {{- end }}
+            {{- if (index .Values "resources" "eric-oss-core-reporting-dimension-query" "requests" "memory") }}
+              memory: {{ (index .Values "resources" "eric-oss-core-reporting-dimension-query" "requests" "memory" | quote) }}
+            {{- end }}
+            {{- if (index .Values "resources" "eric-oss-core-reporting-dimension-query" "requests" "ephemeral-storage") }}
+            {{ println "  ephemeral-storage:" (index .Values "resources" "eric-oss-core-reporting-dimension-query" "requests" "ephemeral-storage" | quote) }}
+            {{- end }}
+            limits:
+            {{- if (index .Values "resources" "eric-oss-core-reporting-dimension-query" "limits" "cpu") }}
+              cpu: {{ (index .Values "resources" "eric-oss-core-reporting-dimension-query" "limits" "cpu" | quote) }}
+            {{- end }}
+            {{- if (index .Values "resources" "eric-oss-core-reporting-dimension-query" "limits" "memory") }}
+              memory: {{ (index .Values "resources" "eric-oss-core-reporting-dimension-query" "limits" "memory" | quote) }}
+            {{- end }}
+            {{- if (index .Values "resources" "eric-oss-core-reporting-dimension-query" "limits" "ephemeral-storage") }}
+            {{ println "  ephemeral-storage:" (index .Values "resources" "eric-oss-core-reporting-dimension-query" "limits" "ephemeral-storage" | quote) }}
+            {{- end }}
+      nodeSelector: {{ include "eric-oss-core-reporting-dimension-query.nodeSelector" . | nindent 6 -}}
+      {{- if .Values.terminationGracePeriodSeconds }}
+      terminationGracePeriodSeconds: {{ include "eric-oss-core-reporting-dimension-query.terminationGracePeriodSeconds" . }}
+      {{- end }}
+
+      {{- if .Values.tolerations }}
+      tolerations:
+        {{- include "eric-oss-core-reporting-dimension-query.tolerations" . | nindent 8 }}
+      {{- end }}
+
+      {{- if (index .Values "podPriority" "eric-oss-core-reporting-dimension-query" "priorityClassName") }}
+      priorityClassName: {{ (index .Values "podPriority" "eric-oss-core-reporting-dimension-query" "priorityClassName") }}
+      {{- end }}
+
+      {{- with .Values.topologySpreadConstraints.deployment }}
+      topologySpreadConstraints:
+        {{- toYaml . | nindent 6 }}
+      {{- end }}
+      {{- if eq .Values.affinity.podAntiAffinity "hard" }}
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - {{ include "eric-oss-core-reporting-dimension-query.name" . }}
+            topologyKey: {{ .Values.affinity.topologyKey | quote }}
+      {{- else if eq .Values.affinity.podAntiAffinity  "soft" }}
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - {{ include "eric-oss-core-reporting-dimension-query.name" . }}
+              topologyKey: {{ .Values.affinity.topologyKey | quote }}
+      {{- end }}

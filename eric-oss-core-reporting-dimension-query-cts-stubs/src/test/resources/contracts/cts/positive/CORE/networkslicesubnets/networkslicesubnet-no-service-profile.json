@@ -1,0 +1,141 @@
+{
+  "type": "ctw/networkslicesubnet",
+  "id": 400,
+  "href": "ctw/networkslicesubnet/400",
+  "externalId": "NSSI-C13",
+  "name": "NetworkSliceSubnet:no-service-profile-1",
+  "comments": "ManualDataSet-For-ESOA1185",
+  "_id": 33,
+  "revisionNumber": 1,
+  "createdOn": "2023-11-17T19:48:47.062Z",
+  "createdBy": "sysadm",
+  "status": "operating",
+  "lastModifiedOn": "2023-11-17T19:48:47.062Z",
+  "lastModifiedBy": "sysadm",
+  "versionNumber": 1,
+  "revisionGroupKey": {
+    "type": "revisionGroupKey",
+    "keyValue": 419
+  },
+  "key": {
+    "type": "ctw/networkslicesubnetKey",
+    "keyValue": 400
+  },
+  "requirementSliceProfiles": [
+    {
+      "mode": "LOADED",
+      "value": {
+        "type": "ctw/sliceprofile",
+        "id": 55,
+        "href": "ctw/sliceprofile/55",
+        "latency": 10,
+        "revisionNumber": 1,
+        "name": "SliceProfile:SP-C13",
+        "comments": "ManualDataSet-For-ESOA1185",
+        "status": "operating",
+        "createdOn": "2023-11-17T19:48:47.135Z",
+        "createdBy": "sysadm",
+        "lastModifiedOn": "2023-11-17T19:48:47.135Z",
+        "lastModifiedBy": "sysadm",
+        "versionNumber": 1,
+        "revisionGroupKey": {
+          "type": "revisionGroupKey",
+          "keyValue": 426
+        },
+        "key": {
+          "type": "ctw/sliceprofileKey",
+          "keyValue": 55
+        },
+        "plmnInfoList": [
+          {
+            "mode": "LOADED",
+            "value": {
+              "type": "ctw/plmninfo",
+              "id": 84,
+              "href": "ctw/plmninfo/84",
+              "plmn_mcc": 100,
+              "plmn_mnc": "101",
+              "revisionNumber": 1,
+              "lastModifiedOn": "2023-11-17T19:48:46.918Z",
+              "lastModifiedBy": "sysadm",
+              "createdOn": "2023-11-17T19:48:46.918Z",
+              "createdBy": "sysadm",
+              "name": "PlmnInfo:100-101|3-9",
+              "comments": "ManualDataSet-For-ESOA1185",
+              "status": "operating",
+              "versionNumber": 1,
+              "revisionGroupKey": {
+                "type": "revisionGroupKey",
+                "keyValue": 402
+              },
+              "sNSSAI_SST": 9,
+              "sNSSAI_SD": "3",
+              "key": {
+                "type": "ctw/plmninfoKey",
+                "keyValue": 84
+              }
+            }
+          },
+          {
+            "mode": "LOADED",
+            "value": {
+              "type": "ctw/plmninfo",
+              "id": 85,
+              "href": "ctw/plmninfo/85",
+              "plmn_mcc": 100,
+              "plmn_mnc": "101",
+              "revisionNumber": 1,
+              "lastModifiedOn": "2023-11-17T19:48:46.921Z",
+              "lastModifiedBy": "sysadm",
+              "createdOn": "2023-11-17T19:48:46.921Z",
+              "createdBy": "sysadm",
+              "name": "PlmnInfo:100-101|5-83",
+              "comments": "ManualDataSet-For-ESOA1185",
+              "status": "operating",
+              "versionNumber": 1,
+              "revisionGroupKey": {
+                "type": "revisionGroupKey",
+                "keyValue": 403
+              },
+              "sNSSAI_SST": 83,
+              "sNSSAI_SD": "5",
+              "key": {
+                "type": "ctw/plmninfoKey",
+                "keyValue": 85
+              }
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "supportingNetworkSliceSubnets": [
+    {
+      "mode": "LOADED",
+      "value": {
+        "type": "ctw/networkslicesubnet",
+        "id": 401,
+        "href": "ctw/networkslicesubnet/401",
+        "externalId": "NSSI-C1",
+        "name": "NetworkSliceSubnet:no-service-profile-2",
+        "comments": "ManualDataSet-For-ESOA1185",
+        "_id": 3,
+        "revisionNumber": 1,
+        "createdOn": "2023-11-17T19:48:47.016Z",
+        "createdBy": "sysadm",
+        "status": "operating",
+        "lastModifiedOn": "2023-11-17T19:48:47.016Z",
+        "lastModifiedBy": "sysadm",
+        "versionNumber": 1,
+        "revisionGroupKey": {
+          "type": "revisionGroupKey",
+          "keyValue": 412
+        },
+        "key": {
+          "type": "ctw/networkslicesubnetKey",
+          "keyValue": 401
+        }
+      }
+    }
+  ]
+}

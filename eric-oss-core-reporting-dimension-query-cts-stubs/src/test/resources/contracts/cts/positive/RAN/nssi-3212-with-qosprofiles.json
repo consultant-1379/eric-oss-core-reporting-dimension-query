@@ -1,0 +1,55 @@
+[
+  {
+    "type": "ctw/networkslicesubnet",
+    "id": 3212,
+    "href": "ctw/networkslicesubnet/3212",
+    "name": "0505151510833_nst_invoke_1_allocate_ran_nssi_service_SC_ranService_SC_vod_QOS_nssi",
+    "revisionNumber": 1,
+    "createdOn": "2023-05-05T15:15:23.536Z",
+    "createdBy": "sysadm",
+    "inServiceDate": "2023-05-05T00:00:00.000Z",
+    "scheduledDate": "2023-05-05T15:15:21.183Z",
+    "status": "operating",
+    "lastModifiedOn": "2023-05-05T15:22:18.315Z",
+    "lastModifiedBy": "sysadm",
+    "versionNumber": 3,
+    "revisionGroupKey":
+    {
+      "type": "revisionGroupKey",
+      "keyValue": 38685
+    },
+    "key":
+    {
+      "type": "ctw/networkslicesubnetKey",
+      "keyValue": 3212
+    },
+    "qosProfiles": [
+      {
+        "mode": "LOADED",
+        "value":
+        {
+          "type": "ctw/qosprofile",
+          "id": 64,
+          "href": "ctw/qosprofile/64",
+          "revisionNumber": 1,
+          "status": "operating",
+          "name": "vod_QOS",
+          "comments": "Initial load",
+          "createdOn": "2023-04-25T12:05:14.527Z",
+          "createdBy": "sysadm",
+          "lastModifiedOn": "2023-04-25T17:55:44.582Z",
+          "lastModifiedBy": "sysadm",
+          "versionNumber": 2,
+          "revisionGroupKey":
+          {
+            "type": "revisionGroupKey",
+            "keyValue": 27453
+          },
+          "key":
+          {
+            "type": "ctw/qosprofileKey",
+            "keyValue": 64
+          }
+        }
+      }]
+  }]

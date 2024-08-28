@@ -1,0 +1,41 @@
+#
+# COPYRIGHT Ericsson 2023
+#
+#
+#
+# The copyright to the computer program(s) herein is the property of
+#
+# Ericsson Inc. The programs may be used and/or copied only with written
+#
+# permission from Ericsson Inc. or in accordance with the terms and
+#
+# conditions stipulated in the agreement/contract under which the
+#
+# program(s) have been supplied.
+#
+
+modelVersion: 2.0
+uses_encryption:
+    # Spring Boot
+  - product_number: CAX1058168
+    encryptions:
+      - usage: "eric-oss-core-reporting-dimension-query Microservice supports HTTPS (v1.1 and v2.0) encryption."
+        purpose: 'Data confidentiality, not only OAM'
+        # Encryption Prototocols
+        protocols:
+         - protocol: TLS 1.3
+           usage: "Traffic data termination and transmission"
+           standard: "IETF"
+         - protocol: TLS 1.2
+           usage: "Traffic data termination and transmission"
+           standard: "IETF"
+        # Cryptographic Algorithms
+        crypto_algorithms:
+         - name: ECDHE
+         - name: ECDSA
+         - name: RSA
+         - name: Chacha20-Poly1305
+         - name: AES
+           key_length: 256
+         - name: SHA
+           key_length: 384

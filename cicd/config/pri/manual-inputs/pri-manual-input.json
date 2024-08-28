@@ -1,0 +1,30 @@
+[
+    {
+        "Exemptions": [],
+        "Repository_helm_link": [
+            {
+                "Title": "eric-oss-core-reporting-dimension-query",
+                "Folder_Link": "https://arm.seli.gic.ericsson.se/artifactory/proj-bos-assurance-drop-helm/core-reporting-dimension-query",
+                "Chart_Name": "eric-oss-core-reporting-dimension-query"
+            }
+        ],
+        "New_and_Updated_2PP_3PP": [],
+        "Upgrade_Information": [],
+        "Marketplace": {
+            "service_url": "https://adp.ericsson.se/marketplace/core-analytics-reporting-dimensioning-qu"
+        },
+        "PRA_Checklist": [],
+        "Release_criteria_unfulfillments": [],
+        "API": [],
+        "SW_Library": [],
+        "CPI": [],
+        "Product_Description": [],
+        "Reusable_Images": [],
+        "Unsupported_Upgrade_Rollback_Path": [],
+        "Reason_For_Major_Version_Update": [],
+        "Restrictions_Limitations": [],
+        "Stakeholder_Verification": [],
+        "Support": [],
+        "References": []
+    }
+]

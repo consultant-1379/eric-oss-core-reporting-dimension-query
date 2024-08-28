@@ -1,0 +1,24 @@
+documents:
+  - name: user-guide
+    files:
+      - ../../../../doc/User_Guide/User_Guide.md
+      - ../../../../doc/User_Guide/CARDQ_architecture_overview.png
+      - ../../../../doc/User_Guide/CARDQ_deployment_overview.png
+      - ../../../../doc/User_Guide/CARDQ_architecture_overview_with_neo4j.png
+  - name: developers-guide
+    files:
+      - ../../../../doc/Application_Developers_Guide/Application_Developers_Guide.md
+      - ../../../../doc/Application_Developers_Guide/cardq-system-context-view.png
+      - ../../../../doc/Application_Developers_Guide/cardq-application-integration.png
+  - name: deployment-guide
+    files:
+      - ../../../../doc/Service_Deployment/Service_Deployment.md
+  - name: troubleshooting-guide
+    files:
+      - ../../../../doc/Troubleshooting_Guide/Troubleshooting_Guide.md
+  - name: read-me
+    files:
+      - ../../../../README.md
+  - name: contributing
+    files:
+      - ../../../../CONTRIBUTING.md

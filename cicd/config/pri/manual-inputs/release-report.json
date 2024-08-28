@@ -1,0 +1,24 @@
+[
+    {
+        "Service_Name": "eric-oss-core-reporting-dimension-query",
+        "CAV_Product": {
+            "Product_id": "APR 201 0000",
+            "New_Rstate": "1.0.0"
+        },
+        "Software_Products": [],
+        "Ticket_identity": [],
+        "Related_documents": [],
+        "Installation_Instruction": {
+            "Document_id": "1531-",
+            "Title": "eric-oss-core-reporting-dimension-query Installation Instructions",
+            "Rev": "PA1",
+            "Support_Other": "EriDoc"
+        },
+        "Verification_Report": {
+            "Document_id": "102 67-",
+            "Title": "eric-oss-core-reporting-dimension-query Test Report",
+            "Rev": "PA1",
+            "Support_Other": "EriDoc"
+        }
+    }
+]

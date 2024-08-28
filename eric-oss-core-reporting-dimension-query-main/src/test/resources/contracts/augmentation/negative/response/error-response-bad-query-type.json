@@ -1,0 +1,7 @@
+{
+  "type": null,
+  "title": "Malformed Request, IllegalArgumentException",
+  "status": 400,
+  "detail": "Malformed Request, Reason: Invalid query type, notcoreorran",
+  "instance": null
+}

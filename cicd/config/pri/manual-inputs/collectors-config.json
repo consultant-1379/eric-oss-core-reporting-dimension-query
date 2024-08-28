@@ -1,0 +1,90 @@
+{
+    "git_collector__Feature": {
+        "id_pattern": "(?:Requirement:\\s*)(-[0-9]+).*?"
+    },
+    "git_collector__Bug": {
+        "id_pattern": "(?:Troublereport:\\s*)(-[0-9]+).*?"
+    },
+    "git_collector__Deprecation": {
+        "id_pattern": "(?:Deprecation:\\s*)(-[0-9]+).*?"
+    },
+    "git_collector__Vulnerabilities": {
+        "id_pattern": "(?:Vulnerability:\\s*)(-[0-9]+).*?"
+    },
+    "git_collector__Abrupt_nbc": {
+        "id_pattern": "(?:Abrupt_NBC:\\s*)(-[0-9]+).*?"
+    },
+    "git_collector__Nuc": {
+        "id_pattern": "(?:NUC:\\s*)(-[0-9]+).*?"
+    },
+    "git_collector__ALO": {
+        "id_pattern": "(?:ALO:\\s*)(-[0-9]+).*?"
+    },
+    "git_collector__DLO": {
+        "id_pattern": "(?:DLO:\\s*)(-[0-9]+).*?"
+    },
+    "jira_collector__No_feature_in_jira": {
+        "jira_url": "https://eteamproject.internal.ericsson.com",
+        "jql": "key = ${id} AND type != Bug AND status = Done AND labels NOT IN (no-pri)"
+    },
+    "jira_collector__Feature_in_jira": {
+        "jira_url": "https://eteamproject.internal.ericsson.com",
+        "jql": "key = ${id} AND status IN (FG, F4) AND (labels NOT IN (Alpha, Beta, Stable, no-pri) OR labels is EMPTY)"
+    },
+    "jira_collector__Feature_Maturity_Alpha": {
+        "jira_url": "https://eteamproject.internal.ericsson.com",
+        "jql": "key = ${id} AND status IN (F2, F4) AND labels = Alpha AND labels NOT IN (no-pri)"
+    },
+    "jira_collector__Feature_Maturity_Beta": {
+        "jira_url": "https://eteamproject.internal.ericsson.com",
+        "jql": "key = ${id} AND status IN (F2, F4) AND labels = Beta AND labels NOT IN (no-pri)"
+    },
+    "jira_collector__Feature_Maturity_Stable": {
+        "jira_url": "https://eteamproject.internal.ericsson.com",
+        "jql": "key = ${id} AND status IN (FG) AND labels = Stable AND labels NOT IN (no-pri)"
+    },
+    "jira_collector__Bug": {
+        "jira_url": "https://eteamproject.internal.ericsson.com",
+        "jql": "key = ${id} AND type IN (Bug, Task, Sub-task, Story) AND status IN (Closed, Done) AND labels NOT IN (no-pri)"
+    },
+    "jira_collector__unfinished_tasks": {
+        "jira_url": "https://eteamproject.internal.ericsson.com",
+        "jql": "key = ${id} AND status NOT IN (Done, Closed, \"CLOSED - NOT REPRODUCABLE\", \"CLOSED WITHOUT ACTION\", \"CLOSED AS DUPLICATE\", Cancelled, FA, FG, F4) AND labels NOT IN (no-pri)"
+    },
+    "jira_collector__open_bug": {
+        "jira_url": "https://eteamproject.internal.ericsson.com",
+        "jql": "project = \"ADP Program\" AND component = \"${env.JIRA_COMPONENT_NAME}\" AND type=Bug AND status NOT IN (Done, Closed, \"CLOSED - NOT REPRODUCABLE\", \"CLOSED WITHOUT ACTION\", \"CLOSED AS DUPLICATE\", Cancelled) AND labels NOT IN (no-pri)"
+    },
+    "jira_collector__Deprecation_done": {
+        "jira_url": "https://eteamproject.internal.ericsson.com",
+        "jql": "key = ${id} AND type = Deprecation AND status = Done AND labels NOT IN (no-pri)"
+    },
+    "jira_collector__Deprecation_approved": {
+        "jira_url": "https://eteamproject.internal.ericsson.com",
+        "jql": "project = \"ADP Program\" AND component = \"${env.JIRA_COMPONENT_NAME}\" AND type = Deprecation AND status = Approved AND \"Start date\" <= endOfDay() AND labels NOT IN (no-pri)"
+    },
+    "jira_collector__Deprecation_approved_gsrs": {
+        "jira_url": "https://eteamproject.internal.ericsson.com",
+        "jql": "project = \"ADP Program\" AND (component=\"${env.JIRA_COMPONENT_NAME}\" OR \"GS/RS Microservices\" = \"${env.JIRA_COMPONENT_NAME}\" ) AND type = Deprecation AND status = Approved AND \"Start date\" <= endOfDay() AND labels NOT IN (no-pri)"
+    },
+    "jira_collector__Vulnerabilities": {
+        "jira_url": "https://eteamproject.internal.ericsson.com",
+        "jql": "key = ${id} AND type IN (Bug, Task, Sub-task, Story) AND status IN (Closed, Done) AND labels NOT IN (no-pri)"
+    },
+    "jira_collector__Abrupt_nbc": {
+        "jira_url": "https://eteamproject.internal.ericsson.com",
+        "jql": "key = ${id} AND type = \"Abrupt NBC\" AND status IN (Closed, Done) AND labels NOT IN (no-pri)"
+    },
+    "jira_collector__Nuc": {
+        "jira_url": "https://eteamproject.internal.ericsson.com",
+        "jql": "key = ${id} AND type = NUC AND status IN (Closed, Done) AND labels NOT IN (no-pri)"
+    },
+    "jira_collector__ALO": {
+        "jira_url": "https://eteamproject.internal.ericsson.com",
+        "jql": "key = ${id} AND type = \"Abnormal Lifecycle Operation\"  AND status IN (Closed, Done) AND labels NOT IN (no-pri)"
+    },
+    "jira_collector__DLO": {
+        "jira_url": "https://eteamproject.internal.ericsson.com",
+        "jql": "key = ${id} AND type = \"Disturbance during Lifecycle Operation\" AND status IN (Closed, Done) AND labels NOT IN (no-pri)"
+    }
+}

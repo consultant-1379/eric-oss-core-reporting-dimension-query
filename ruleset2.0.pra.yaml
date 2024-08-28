@@ -1,0 +1,390 @@
+modelVersion: 2.0
+
+
+description: eric-oss-core-reporting-dimension-query Microservice Release Rules
+
+
+import:
+  images: cicd/bob-rulesets/docker-images.yaml
+
+  project: project-properties.yaml
+  common: cicd/bob-rulesets/common-rules.yaml
+  munin: cicd/bob-rulesets/munin-rules.yaml
+  swca: cicd/bob-rulesets/swca-rules.yaml
+  default-ruleset: ruleset2.0.yaml
+  pri: cicd/bob-rulesets/pri-rules.yaml
+  maven: cicd/bob-rulesets/maven-rules.yaml
+  eridoc: cicd/bob-rulesets/eridoc-rules.yaml
+  evms: cicd/bob-rulesets/evms-rules.yaml
+
+
+properties:
+  - product-structure-parameters: "--set ADP_CHASSIS_LIBRARY_VERSION=${project.adp-chassis-library-version}
+                                   --set CBO_VERSION=${project.image-base-os-product-version}"
+  - output-documents-file: ${project.munin-files-folder}/documents.yaml
+  - git-clone-url: ${project.gerrit-url}/${project.gerrit-project-name}.git
+
+  - image-released-proj: ${project.arm-project-name}-released
+  - image-released-path: ${project.image-registry-url}/${image-released-proj}/${project.image-name}:${env.RELEASE_CANDIDATE}
+  - image-drop-proj: ${project.arm-project-name}-drop
+  - image-drop-path: ${project.image-registry-url}/${image-drop-proj}/${project.image-name}
+
+  - helm-chart-released-folder: ${common.ci-artifacts-directory}/helm/released
+  - helm-chart-drop-repo: ${project.arm-repository-url}/${project.arm-project-name}-drop-helm
+  - helm-chart-released-repo: ${project.arm-repository-url}/${project.arm-project-name}-released-helm
+  - helm-chart-virtual-released-repo: ${project.arm-repository-url}/${project.arm-project-name}-released-helm
+
+
+env:
+  - GERRIT_USERNAME (default=${common.user})
+  - GERRIT_PASSWORD
+  - BRANCH_NAME (default=master)
+
+  - RELEASE_CANDIDATE
+  - HELM_TOKEN
+  - HELM_USER
+  - ACA_USERNAME
+  - ACA_PASSWORD
+  - VERSION_UPDATE
+
+
+rules:
+  clean:
+    - rule: common.clean
+    - task: artifact-properties
+      cmd: rm -f artifact.properties
+
+
+  init-drop:
+    - rule: default-ruleset.init
+
+
+  init-release:
+    - rule: common.init-release
+      properties:
+        - version: ${env.RELEASE_CANDIDATE}
+        - git-reference-for-version: ${env.RELEASE_CANDIDATE}
+
+    - task: create-artifacts-directories
+      cmd: mkdir -p ${common.ci-artifacts-directory}
+
+    - task: adp-artifacts-properties
+      docker-image: images.adp-release-auto
+      cmd: generate-adp-artifacts
+        --chart-name ${project.helm-chart-name}
+        --chart-version ${var.common.version-release}
+        --chart-repo ${helm-chart-released-repo}
+
+    - task: get-commit-hash-release-candidate
+      docker-image: images.adp-release-auto
+      cmd:
+        - git show-ref --hash ${env.RELEASE_CANDIDATE} > .bob/var.commithash
+
+
+  build:
+    - rule: default-ruleset.build
+
+
+#-------------------------------------
+#  DROP RULES
+#-------------------------------------
+  drop-prepare:
+    - rule: test-report-generate
+
+
+  drop-push:
+    - rule: test-report-upload
+    - rule: test-report-upload-approve
+    - rule: munin-drop
+
+
+#-------------------------------------
+#  RELEASE PIPELINE RULES
+#-------------------------------------
+  release-push:
+    - rule: pri-generate-upload-approve
+    - rule: git-ca-register-source-code
+    #- rule: aca-upload-register-interface
+    - rule: aca-upload-register-helm
+    - rule: aca-upload-register-image
+    - rule: munin-release
+    - rule: create-release-git-tag
+
+
+#-------------------------------------
+#  EVMS Rules
+#-------------------------------------
+  # Pre registers 2PP/3PP's of a new released version in evms server
+  # The property evms-docker-flag is required due to ADPPRG-154701. Should be removed once the issue is closed.
+  evms-drop-push:
+    - rule: evms.evms-preregistration
+      properties:
+        - evms-product-version: ${common.version-prefix}
+        - evms-product-name: ${project.evms-product-name}
+        - product-structure-path: product_structure.yaml
+        - evms-docker-flags: "--workdir ${env.common.PWD}/cicd/config/plms"
+        - evms-extra-args: ${product-structure-parameters}
+
+
+  # Activates 2PP/3PP's of a new released version in evms server, also generates evms checker html report
+  # The property evms-docker-flag is required due to ADPPRG-154701. Should be removed once the issue is closed.
+  evms-release-push:
+    - rule: evms.evms-registration
+      properties:
+        - evms-product-version: ${common.version-prefix}
+        - evms-product-name: ${project.evms-product-name}
+        - product-structure-path: product_structure.yaml
+        - evms-docker-flags: "--workdir ${env.common.PWD}/cicd/config/plms"
+        - evms-extra-args: ${product-structure-parameters}
+
+
+  evms-checker:
+    - rule: evms.evms-checker
+      properties:
+        - evms-product-version: ${common.version-prefix}
+        - evms-product-name: ${project.evms-product-name}
+        - evms-extra-args: ${product-structure-parameters}
+
+
+#-------------------------------------
+#  MUNIN RULES
+#-------------------------------------
+  munin-validate:
+    - rule: munin.validate
+      properties:
+        - product-structure-path: ${project.munin-product-structure}
+        - munin-extra-args: ${product-structure-parameters}
+
+
+  munin-drop:
+    - rule: munin-validate
+
+
+    - rule: munin.doc-search
+      properties:
+        - product-structure-path: ${project.munin-product-structure}
+        - output-documents-file: ${output-documents-file}
+        - munin-extra-args: ${product-structure-parameters}
+
+
+    - rule: munin.create-versions
+      properties:
+        - product-structure-path: ${project.munin-product-structure}
+        - munin-extra-args: ${product-structure-parameters}
+
+
+  munin-release:
+    - rule: munin.release
+      properties:
+        - product-structure-path: ${project.munin-product-structure}
+        - munin-extra-args: ${product-structure-parameters}
+
+
+  munin-delete-versions:
+    - rule: munin.delete
+      properties:
+        - product-structure-path: ${project.munin-product-structure}
+        - munin-extra-args: ${product-structure-parameters}
+
+
+#-------------------------------------
+#  PRI RULES
+#-------------------------------------
+  pri-generate:
+    - rule: pri.generate-with-flags
+      properties:
+        - pri-tool-flags: "--dry-run"
+        - pri-eridoc-approver: "${project.eridoc-approver}"
+        - pri-eridoc-responsible: "${project.eridoc-responsible}"
+        - pri-jira-component-long-name: "${project.jira-component-name}"
+        - pri-gerrit-url: "${project.gerrit-url}/a/plugins/gitiles/${project.gerrit-project-name}"
+        - pri-product-release-number: "${var.common.version}"
+
+
+  pri-generate-upload:
+    - rule: pri.generate-with-flags
+      properties:
+        - pri-tool-flags: "--upload"
+        - pri-eridoc-approver: "${project.eridoc-approver}"
+        - pri-eridoc-responsible: "${project.eridoc-responsible}"
+        - pri-jira-component-long-name: "${project.jira-component-name}"
+        - pri-gerrit-url: "${project.gerrit-url}/a/plugins/gitiles/${project.gerrit-project-name}"
+        - pri-product-release-number: "${var.common.version}"
+
+
+  pri-generate-upload-approve:
+    - rule: pri.generate-with-flags
+      properties:
+        - pri-tool-flags: "--upload --approve"
+        - pri-eridoc-approver: "${project.eridoc-approver}"
+        - pri-eridoc-responsible: "${project.eridoc-responsible}"
+        - pri-jira-component-long-name: "${project.jira-component-name}"
+        - pri-gerrit-url: "${project.gerrit-url}/a/plugins/gitiles/${project.gerrit-project-name}"
+        - pri-product-release-number: ${var.common.version-release}
+
+
+#-------------------------------------
+#  GIT-CA/ACA RULES
+#-------------------------------------
+  git-ca-register-source-code:
+    - rule: swca.git-ca-register
+      properties:
+        - product-number: ${project.source-product-number}
+        - git-ca-repo-name: ${project.git-ca-repo-name}
+
+
+  aca-upload-register-helm:
+    - rule: swca.aca-upload-register
+      properties:
+        - aca-arm-artifact-url: ${project.arm-repository-url}/${project.arm-project-name}-release/${project.helm-chart-name}/${project.helm-chart-name}-%{var.common.version}.tgz
+        - product-number: ${project.helm-chart-product-number}
+        - swca-policy: ${project.swca-policy}
+
+
+  aca-upload-register-image:
+    - rule: swca.aca-upload-register
+      properties:
+        - aca-arm-artifact-url: ${project.image-registry-url}/${project.arm-project-name}-release/${project.image-name}:${var.common.version}
+        - product-number: ${project.image-product-number}
+        - swca-policy: ${project.swca-policy}
+
+
+#-------------------------------------
+#  TEST REPORT RULES
+#-------------------------------------
+  test-report-generate:
+    - rule: maven.mvn
+      properties:
+        - maven-args: surefire-report:report-only
+        - maven-extra-docker-flags: --workdir ${env.common.PWD}/java/${project.spring-boot-module-name}
+    - task: archive-surefire-report
+      cmd: cp -r ${project.spring-boot-app-artifact-directory}/site/surefire-report.html "${common.ci-artifacts-directory}/"
+
+
+  test-report-upload:
+    - rule: eridoc.eridoc-upload
+      properties:
+        - config_file: cicd/config/documentation/mvn-surefire-report/eridoc.yaml
+        - eridoc-extra-args: --set file=${env.common.PWD}/${project.spring-boot-app-artifact-directory}/site/surefire-report.html
+            --set version=${var.common.version-prefix}
+            --dry-run ${env.common.DRY_RUN}
+
+
+  test-report-upload-approve:
+    - rule: eridoc.eridoc-upload-and-approve
+      properties:
+        - config_file: cicd/config/documentation/mvn-surefire-report/eridoc.yaml
+        - eridoc-extra-args: --set file=${env.common.PWD}/${project.spring-boot-app-artifact-directory}/site/surefire-report.html
+            --set version=${var.common.version-prefix}
+
+
+  test-report-approve:
+    - rule: eridoc.eridoc-approve
+      properties:
+        - config_file: cicd/config/documentation/mvn-surefire-report/eridoc.yaml
+        - eridoc-extra-args: --set file=${env.common.PWD}/${project.spring-boot-app-artifact-directory}/site/surefire-report.html
+            --set version=${var.common.version-prefix}
+            --dry-run ${env.common.DRY_RUN}
+
+
+  create-release-git-tag:
+    - task: git-tag-release
+      docker-image: images.adp-release-auto
+      docker-envs:
+        - GERRIT_USERNAME
+        - GERRIT_PASSWORD
+      cmd: version-handler create-git-tag
+        --tag v${var.common.version-release}
+        --message "Release v${var.common.version-release}"
+        --git-repo-path .
+        --commitid ${env.RELEASE_CANDIDATE}
+        --dry-run ${common.dry-run}
+
+
+  create-drop-git-tag:
+    - task: git-tag-drop
+      docker-image: images.adp-release-auto
+      docker-envs:
+        - GERRIT_USERNAME
+        - GERRIT_PASSWORD
+      cmd: version-handler create-git-tag
+        --tag ${common.version}
+        --message "Drop ${common.version}"
+        --git-repo-path .
+        --dry-run ${common.dry-run}
+
+
+  increment-version-prefix:
+    - task: git-push-version-prefix-increment
+      docker-image: images.adp-release-auto
+      docker-envs:
+        - GERRIT_USERNAME
+        - GERRIT_PASSWORD
+      cmd: version-handler increment
+        --step-version-prefix ${env.VERSION_UPDATE}
+        --git-repo-url ${git-clone-url}
+        --branch ${env.BRANCH_NAME}
+        --dry-run ${env.common.DRY_RUN}
+
+
+  publish-released-docker-image:
+    - task: image-pull
+      cmd: docker pull ${image-drop-path}:${env.RELEASE_CANDIDATE}
+    - task: image-tag-released
+      cmd: docker tag ${image-drop-path}:${env.RELEASE_CANDIDATE} ${image-released-path}
+    - task: release-docker-image
+      cmd: docker push ${image-released-path}
+
+
+  publish-released-helm-chart:
+    - task: create-chart-folder
+      cmd: mkdir -p ${helm-chart-released-folder}
+    - task: generate-release-chart
+      docker-image: images.adp-release-auto
+      docker-flags:
+        - "--env HELM_USER"
+        - "--env HELM_TOKEN"
+      cmd: generate_release_helm_package
+        --repo ${helm-chart-drop-repo}
+        --chart-name ${project.helm-chart-name}
+        --chart-version ${env.RELEASE_CANDIDATE}
+        --output ${helm-chart-released-folder}
+        --chart-released-version ${var.common.version-release}
+        --helm-user ${env.HELM_USER}
+        --arm-api-token ${env.HELM_TOKEN}
+        --replace eric-product-info.yaml:${image-drop-proj}=${image-released-proj}
+    - task: release-helm-package
+      docker-image: images.adp-release-auto
+      docker-envs:
+        - HELM_USER
+        - HELM_TOKEN
+      cmd: upload_helm_package
+        --chart-filename "${helm-chart-released-folder}/${project.helm-chart-name}-${var.common.version-release}.tgz"
+        --chart-repo ${helm-chart-released-repo}
+        --helm-user ${env.HELM_USER}
+        --helm-token ${env.HELM_TOKEN}
+        --virtual-repo ${helm-chart-virtual-released-repo}
+        --dry-run ${env.common.DRY_RUN}
+        --skip-existing-version
+
+
+  upload-and-register-artifacts-in-aca:
+    - rule: swca.upload-archive
+      properties:
+        - helm-chart-local-path: ${helm-chart-released-folder}/${project.helm-chart-name}-${var.common.version-release}.tgz
+        - replaced-repo-path-value: ${image-released-proj}
+        - aca-helm-container: ${project.aca-helm-container}
+
+
+  generate-document-list:
+    - rule: munin.doc-search
+      properties:
+        - product-structure-path: ${project.munin-product-structure}
+        - output-documents-file: ${project.munin-output-documents-file}
+        - munin-extra-args: -v ${common.version-prefix} --latest-approved ${product-structure-parameters}
+
+
+  cleanup-images:
+    - task: remove-images
+      cmd:
+        - docker rmi --force ${image-drop-path}:${env.RELEASE_CANDIDATE} ${image-released-path} >/dev/null 2>&1

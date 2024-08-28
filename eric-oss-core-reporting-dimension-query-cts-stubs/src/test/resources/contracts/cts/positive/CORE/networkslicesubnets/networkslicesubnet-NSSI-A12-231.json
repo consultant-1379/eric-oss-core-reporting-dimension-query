@@ -1,0 +1,53 @@
+{
+  "type": "ctw/networkslicesubnet",
+  "id": 231,
+  "href": "ctw/networkslicesubnet/231",
+  "externalId": "NSSI-A12",
+  "name": "NetworkSliceSubnet:NSSI-A12",
+  "comments": "ManualDataSet-For-ESOA1185",
+  "_id": 12,
+  "revisionNumber": 1,
+  "createdOn": "2023-11-17T19:48:47.029Z",
+  "createdBy": "sysadm",
+  "status": "operating",
+  "lastModifiedOn": "2023-11-17T19:48:47.029Z",
+  "lastModifiedBy": "sysadm",
+  "versionNumber": 1,
+  "revisionGroupKey": {
+    "type": "revisionGroupKey",
+    "keyValue": 414
+  },
+  "key": {
+    "type": "ctw/networkslicesubnetKey",
+    "keyValue": 231
+  },
+  "supportingNetworkSliceSubnets": [
+    {
+      "mode": "LOADED",
+      "value": {
+        "type": "ctw/networkslicesubnet",
+        "id": 227,
+        "href": "ctw/networkslicesubnet/227",
+        "externalId": "NSSI-A1",
+        "name": "NetworkSliceSubnet:NSSI-A1",
+        "comments": "ManualDataSet-For-ESOA1185",
+        "_id": 1,
+        "revisionNumber": 1,
+        "createdOn": "2023-11-17T19:48:46.997Z",
+        "createdBy": "sysadm",
+        "status": "operating",
+        "lastModifiedOn": "2023-11-17T19:48:46.997Z",
+        "lastModifiedBy": "sysadm",
+        "versionNumber": 1,
+        "revisionGroupKey": {
+          "type": "revisionGroupKey",
+          "keyValue": 410
+        },
+        "key": {
+          "type": "ctw/networkslicesubnetKey",
+          "keyValue": 227
+        }
+      }
+    }
+  ]
+}

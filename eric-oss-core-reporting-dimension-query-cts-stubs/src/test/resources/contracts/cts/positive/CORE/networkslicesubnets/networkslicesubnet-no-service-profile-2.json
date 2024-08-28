@@ -1,0 +1,57 @@
+{
+  "type": "ctw/networkslicesubnet",
+  "id": 401,
+  "href": "ctw/networkslicesubnet/401",
+  "externalId": "NSSI-C1",
+  "name": "NetworkSliceSubnet:no-service-profile-2",
+  "comments": "ManualDataSet-For-ESOA1185",
+  "_id": 3,
+  "revisionNumber": 1,
+  "createdOn": "2023-11-17T19:48:47.016Z",
+  "createdBy": "sysadm",
+  "status": "operating",
+  "lastModifiedOn": "2023-11-17T19:48:47.016Z",
+  "lastModifiedBy": "sysadm",
+  "versionNumber": 1,
+  "revisionGroupKey": {
+    "type": "revisionGroupKey",
+    "keyValue": 412
+  },
+  "key": {
+    "type": "ctw/networkslicesubnetKey",
+    "keyValue": 401
+  },
+  "networkSlice": [
+    {
+      "mode": "LOADED",
+      "value": {
+        "type": "ctw/networkslice",
+        "id": 402,
+        "href": "ctw/networkslice/402",
+        "name": "NetworkSlice:no-service-profile",
+        "comments": "ManualDataSet-For-ESOA1185",
+        "_type": "3",
+        "maxNumberUE": 30,
+        "latency": 30,
+        "ueMobilityLevel": "Stationary",
+        "resourceSharingLevel": "Shared",
+        "description": "MIoT/Stationary",
+        "revisionNumber": 1,
+        "createdOn": "2023-11-17T19:48:46.936Z",
+        "createdBy": "sysadm",
+        "status": "operating",
+        "lastModifiedOn": "2023-11-17T19:48:46.936Z",
+        "lastModifiedBy": "sysadm",
+        "versionNumber": 1,
+        "revisionGroupKey": {
+          "type": "revisionGroupKey",
+          "keyValue": 406
+        },
+        "key": {
+          "type": "ctw/networksliceKey",
+          "keyValue": 402
+        }
+      }
+    }
+  ]
+}

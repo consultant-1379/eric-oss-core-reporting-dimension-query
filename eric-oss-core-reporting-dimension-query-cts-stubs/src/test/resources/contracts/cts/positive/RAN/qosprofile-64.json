@@ -1,0 +1,177 @@
+[
+  {
+  "type": "ctw/qosprofile",
+  "id": 64,
+  "href": "ctw/qosprofile/64",
+  "revisionNumber": 1,
+  "status": "operating",
+  "name": "vod_QOS",
+  "comments": "Initial load",
+  "createdOn": "2023-04-25T12:05:14.527Z",
+  "createdBy": "sysadm",
+  "lastModifiedOn": "2023-04-25T17:55:44.582Z",
+  "lastModifiedBy": "sysadm",
+  "versionNumber": 2,
+  "revisionGroupKey":
+  {
+    "type": "revisionGroupKey",
+    "keyValue": 27453
+  },
+  "key":
+  {
+    "type": "ctw/qosprofileKey",
+    "keyValue": 64
+  },
+  "fiveQISets": [
+    {
+      "mode": "LOADED",
+      "value":
+      {
+        "type": "ctw/fiveqiset",
+        "id": 248,
+        "href": "ctw/fiveqiset/248",
+        "dynamicAttributes": [
+          {
+            "attributeKey": 425,
+            "groupName": "ModelData",
+            "attributeName": "isModelData",
+            "booleanAttributeValue": false,
+            "attributeDefinitionId": 494
+          },
+          {
+            "attributeKey": 426,
+            "groupName": "GNBDUData",
+            "attributeName": "id",
+            "stringAttributeValue": "1",
+            "attributeDefinitionId": 495
+          }],
+        "supportedFunction": "gnbdu",
+        "isDefaultSet": false,
+        "revisionNumber": 1,
+        "inServiceDate": "2023-05-04T00:00:00.000Z",
+        "scheduledDate": "2023-05-04T13:38:06.785Z",
+        "status": "operating",
+        "createdOn": "2023-05-04T13:38:09.681Z",
+        "createdBy": "sysadm",
+        "lastModifiedOn": "2023-05-04T14:01:19.497Z",
+        "lastModifiedBy": "sysadm",
+        "name": "NR01gNodeBRadio00015__vod_QOS__5QiSet",
+        "versionNumber": 2,
+        "revisionGroupKey":
+        {
+          "type": "revisionGroupKey",
+          "keyValue": 36622
+        },
+        "key":
+        {
+          "type": "ctw/fiveqisetKey",
+          "keyValue": 248
+        },
+        "fiveQIFlows": [
+          {
+            "mode": "LOADED",
+            "value":
+            {
+              "type": "ctw/fiveqiflow",
+              "id": 533,
+              "href": "ctw/fiveqiflow/533",
+              "fiveQIValue": 5,
+              "resourceType": "nonGBR",
+              "priorityLevel": 60,
+              "revisionNumber": 1,
+              "inServiceDate": "2023-05-04T00:00:00.000Z",
+              "scheduledDate": "2023-05-04T13:38:06.785Z",
+              "status": "operating",
+              "createdOn": "2023-05-04T13:38:09.701Z",
+              "createdBy": "sysadm",
+              "lastModifiedOn": "2023-05-04T14:01:19.483Z",
+              "lastModifiedBy": "sysadm",
+              "name": "NR01gNodeBRadio00015_fiveQI_9",
+              "comments": "Initial load",
+              "versionNumber": 2,
+              "revisionGroupKey":
+              {
+                "type": "revisionGroupKey",
+                "keyValue": 36623
+              },
+              "key":
+              {
+                "type": "ctw/fiveqiflowKey",
+                "keyValue": 533
+              }
+            }
+          }]
+      }
+    },
+    {
+      "mode": "LOADED",
+      "value":
+      {
+        "type": "ctw/fiveqiset",
+        "id": 224,
+        "href": "ctw/fiveqiset/224",
+        "dynamicAttributes": [
+          {
+            "attributeKey": 382,
+            "groupName": "ModelData",
+            "attributeName": "isModelData",
+            "booleanAttributeValue": true,
+            "attributeDefinitionId": 494
+          }],
+        "supportedFunction": "gnbdu",
+        "isDefaultSet": false,
+        "revisionNumber": 1,
+        "status": "operating",
+        "createdOn": "2023-04-25T17:57:12.026Z",
+        "createdBy": "sysadm",
+        "lastModifiedOn": "2023-04-27T15:07:18.119Z",
+        "lastModifiedBy": "sysadm",
+        "name": "fiveQI_9",
+        "comments": "Initial load",
+        "versionNumber": 3,
+        "revisionGroupKey":
+        {
+          "type": "revisionGroupKey",
+          "keyValue": 28139
+        },
+        "key":
+        {
+          "type": "ctw/fiveqisetKey",
+          "keyValue": 224
+        },
+        "fiveQIFlows": [
+          {
+            "mode": "LOADED",
+            "value":
+            {
+              "type": "ctw/fiveqiflow",
+              "id": 493,
+              "href": "ctw/fiveqiflow/493",
+              "fiveQIValue": 5,
+              "resourceType": "nonGBR",
+              "priorityLevel": 60,
+              "revisionNumber": 1,
+              "status": "operating",
+              "createdOn": "2023-04-25T17:55:44.873Z",
+              "createdBy": "sysadm",
+              "lastModifiedOn": "2023-04-27T15:12:38.215Z",
+              "lastModifiedBy": "sysadm",
+              "name": "fiveQI_9",
+              "comments": "Initial load",
+              "versionNumber": 2,
+              "revisionGroupKey":
+              {
+                "type": "revisionGroupKey",
+                "keyValue": 28138
+              },
+              "key":
+              {
+                "type": "ctw/fiveqiflowKey",
+                "keyValue": 493
+              }
+            }
+          }]
+      }
+    }]
+}
+]

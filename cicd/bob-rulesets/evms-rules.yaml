@@ -1,0 +1,135 @@
+modelVersion: 2.0
+
+
+description: "Ericsson Vulnerability Management Service Rules"
+
+
+import:
+  images: docker-images.yaml
+  common: common-rules.yaml
+
+
+properties:
+  - product-structure-path: ""
+  - evms-product-name: ""
+  - evms-product-version: ""
+
+  - evms-server : ${env.EVMS_SERVER}
+  - evms-checker-html-dir: ${common.ci-html-reports-directory}/evms
+  - evms-archive-dir: ${common.ci-artifacts-directory}/evms
+  - enable-auto-answering: "false"
+  - evms-extra-args: ""
+  - evms-docker-flags: ""
+
+  - evms-api-key: ${env.EVMS_API_KEY}
+
+
+env:
+  - EVMS_API_KEY(default=)
+  - EVMS_SERVER(default="https://evms.internal.ericsson.com/")
+  - DRY_RUN (default=false)
+
+
+rules:
+  evms-preregistration:
+    - rule: check-mandatory-evms-properties
+    - task: pre-register-enable-auto-answering
+      condition: conditions:enable-auto-answering
+      docker-image: images.adp-release-auto
+      docker-flags:
+        - ${evms-docker-flags}
+      cmd: evms pre-register
+        --enable-auto-answering
+        --evms-api-key '${evms-api-key}'
+        --product-name "${evms-product-name}"
+        --product-version "${evms-product-version}"
+        --evms-server "${evms-server}"
+        --product-structure "${product-structure-path}"
+        --dry-run "${env.DRY_RUN}"
+        --debug
+        ${evms-extra-args}
+
+    - task: pre-register-dont-enable-auto-answering
+      condition: conditions:dont-enable-auto-answering
+      docker-image: images.adp-release-auto
+      docker-flags:
+        - ${evms-docker-flags}
+      cmd: evms pre-register
+        --evms-api-key '${evms-api-key}'
+        --product-name "${evms-product-name}"
+        --product-version "${evms-product-version}"
+        --evms-server "${evms-server}"
+        --product-structure "${product-structure-path}"
+        --dry-run "${env.DRY_RUN}"
+        --debug
+        ${evms-extra-args}
+
+
+  evms-registration:
+    - rule: check-mandatory-evms-properties
+    - task: register-enable-auto-answering
+      condition: conditions:enable-auto-answering
+      docker-image: images.adp-release-auto
+      docker-flags:
+        - ${evms-docker-flags}
+      cmd: evms activate
+        --enable-auto-answering
+        --evms-api-key '${evms-api-key}'
+        --product-name "${evms-product-name}"
+        --product-version "${evms-product-version}"
+        --evms-server "${evms-server}"
+        --product-structure "${product-structure-path}"
+        --dry-run "${env.DRY_RUN}"
+        --debug
+        ${evms-extra-args}
+
+    - task: register-dont-enable-auto-answering
+      condition: conditions:dont-enable-auto-answering
+      docker-image: images.adp-release-auto
+      docker-flags:
+        - ${evms-docker-flags}
+      cmd: evms activate
+        --evms-api-key '${evms-api-key}'
+        --product-name "${evms-product-name}"
+        --product-version "${evms-product-version}"
+        --evms-server "${evms-server}"
+        --product-structure "${product-structure-path}"
+        --dry-run "${env.DRY_RUN}"
+        --debug
+        ${evms-extra-args}
+
+    - rule: evms-checker
+
+
+  evms-checker:
+    # This rule can be updated to check Micro CBO registration once ADPPRG-153479 is closed.
+    # --evms-user "DUMMYUSER" - Hack due to ADPPRG-153479. Should be removed once the issue is closed.
+    - task: check-mandatory-evms-properties:check-common-properties
+    - task: evms-check-test
+      description: Checks if ADP microservice is registered in EVMS.
+      docker-image: images.adp-release-auto
+      cmd:
+        - mkdir -p ${evms-checker-html-dir}
+        - check-evms registration
+          --evms-user "DUMMYUSER"
+          --evms-api-key '${evms-api-key}'
+          --product-name "${evms-product-name}"
+          --product-version "${evms-product-version}"
+          --evms-server "${evms-server}"
+          --output-directory "${evms-checker-html-dir}"
+          --report-format html
+          --debug
+
+
+  check-mandatory-evms-properties:
+    - task: check-common-properties
+      cmd: '[[ -n "${evms-product-name}" ]] && [[ -n "${evms-product-version}" ]]'
+    - task: check-registration-properties
+      cmd: '[[ -n "${product-structure-path}" ]]'
+
+
+  conditions:
+    - task: enable-auto-answering
+      cmd: test "${enable-auto-answering}" = "true"
+    - task: dont-enable-auto-answering
+      cmd: test "${enable-auto-answering}" = "false"

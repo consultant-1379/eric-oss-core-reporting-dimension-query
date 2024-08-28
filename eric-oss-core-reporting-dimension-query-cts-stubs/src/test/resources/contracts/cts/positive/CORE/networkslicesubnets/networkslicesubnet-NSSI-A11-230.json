@@ -1,0 +1,227 @@
+{
+  "type": "ctw/networkslicesubnet",
+  "id": 230,
+  "href": "ctw/networkslicesubnet/230",
+  "externalId": "NSSI-A11",
+  "name": "NetworkSliceSubnet:NSSI-A11",
+  "comments": "ManualDataSet-For-ESOA1185",
+  "_id": 11,
+  "revisionNumber": 1,
+  "createdOn": "2023-11-17T19:48:47.023Z",
+  "createdBy": "sysadm",
+  "status": "operating",
+  "lastModifiedOn": "2023-11-17T19:48:47.023Z",
+  "lastModifiedBy": "sysadm",
+  "versionNumber": 1,
+  "revisionGroupKey": {
+    "type": "revisionGroupKey",
+    "keyValue": 413
+  },
+  "key": {
+    "type": "ctw/networkslicesubnetKey",
+    "keyValue": 230
+  },
+  "requirementSliceProfiles": [
+    {
+      "mode": "LOADED",
+      "value": {
+        "type": "ctw/sliceprofile",
+        "id": 49,
+        "href": "ctw/sliceprofile/49",
+        "latency": 10,
+        "revisionNumber": 1,
+        "name": "SliceProfile:SP-A11",
+        "comments": "ManualDataSet-For-ESOA1185",
+        "status": "operating",
+        "createdOn": "2023-11-17T19:48:47.071Z",
+        "createdBy": "sysadm",
+        "lastModifiedOn": "2023-11-17T19:48:47.071Z",
+        "lastModifiedBy": "sysadm",
+        "versionNumber": 1,
+        "revisionGroupKey": {
+          "type": "revisionGroupKey",
+          "keyValue": 420
+        },
+        "key": {
+          "type": "ctw/sliceprofileKey",
+          "keyValue": 49
+        },
+        "plmnInfoList": [
+          {
+            "mode": "LOADED",
+            "value": {
+              "type": "ctw/plmninfo",
+              "id": 80,
+              "href": "ctw/plmninfo/80",
+              "plmn_mcc": 100,
+              "plmn_mnc": "101",
+              "revisionNumber": 1,
+              "lastModifiedOn": "2023-11-17T19:48:46.904Z",
+              "lastModifiedBy": "sysadm",
+              "createdOn": "2023-11-17T19:48:46.904Z",
+              "createdBy": "sysadm",
+              "name": "PlmnInfo:100-101|1-1",
+              "comments": "ManualDataSet-For-ESOA1185",
+              "status": "operating",
+              "versionNumber": 1,
+              "revisionGroupKey": {
+                "type": "revisionGroupKey",
+                "keyValue": 398
+              },
+              "sNSSAI_SST": 1,
+              "sNSSAI_SD": "1",
+              "key": {
+                "type": "ctw/plmninfoKey",
+                "keyValue": 80
+              }
+            }
+          },
+          {
+            "mode": "LOADED",
+            "value": {
+              "type": "ctw/plmninfo",
+              "id": 81,
+              "href": "ctw/plmninfo/81",
+              "plmn_mcc": 100,
+              "plmn_mnc": "101",
+              "revisionNumber": 1,
+              "lastModifiedOn": "2023-11-17T19:48:46.909Z",
+              "lastModifiedBy": "sysadm",
+              "createdOn": "2023-11-17T19:48:46.909Z",
+              "createdBy": "sysadm",
+              "name": "PlmnInfo:100-101|1-3",
+              "comments": "ManualDataSet-For-ESOA1185",
+              "status": "operating",
+              "versionNumber": 1,
+              "revisionGroupKey": {
+                "type": "revisionGroupKey",
+                "keyValue": 399
+              },
+              "sNSSAI_SST": 3,
+              "sNSSAI_SD": "1",
+              "key": {
+                "type": "ctw/plmninfoKey",
+                "keyValue": 81
+              }
+            }
+          }
+        ]
+      }
+    },
+    {
+      "mode": "LOADED",
+      "value": {
+        "type": "ctw/sliceprofile",
+        "id": 50,
+        "href": "ctw/sliceprofile/50",
+        "latency": 10,
+        "revisionNumber": 1,
+        "name": "SliceProfile:SP-A12",
+        "comments": "ManualDataSet-For-ESOA1185",
+        "status": "operating",
+        "createdOn": "2023-11-17T19:48:47.085Z",
+        "createdBy": "sysadm",
+        "lastModifiedOn": "2023-11-17T19:48:47.085Z",
+        "lastModifiedBy": "sysadm",
+        "versionNumber": 1,
+        "revisionGroupKey": {
+          "type": "revisionGroupKey",
+          "keyValue": 421
+        },
+        "key": {
+          "type": "ctw/sliceprofileKey",
+          "keyValue": 50
+        },
+        "plmnInfoList": [
+          {
+            "mode": "LOADED",
+            "value": {
+              "type": "ctw/plmninfo",
+              "id": 80,
+              "href": "ctw/plmninfo/80",
+              "plmn_mcc": 100,
+              "plmn_mnc": "101",
+              "revisionNumber": 1,
+              "lastModifiedOn": "2023-11-17T19:48:46.904Z",
+              "lastModifiedBy": "sysadm",
+              "createdOn": "2023-11-17T19:48:46.904Z",
+              "createdBy": "sysadm",
+              "name": "PlmnInfo:100-101|1-1",
+              "comments": "ManualDataSet-For-ESOA1185",
+              "status": "operating",
+              "versionNumber": 1,
+              "revisionGroupKey": {
+                "type": "revisionGroupKey",
+                "keyValue": 398
+              },
+              "sNSSAI_SST": 1,
+              "sNSSAI_SD": "1",
+              "key": {
+                "type": "ctw/plmninfoKey",
+                "keyValue": 80
+              }
+            }
+          },
+          {
+            "mode": "LOADED",
+            "value": {
+              "type": "ctw/plmninfo",
+              "id": 81,
+              "href": "ctw/plmninfo/81",
+              "plmn_mcc": 100,
+              "plmn_mnc": "101",
+              "revisionNumber": 1,
+              "lastModifiedOn": "2023-11-17T19:48:46.909Z",
+              "lastModifiedBy": "sysadm",
+              "createdOn": "2023-11-17T19:48:46.909Z",
+              "createdBy": "sysadm",
+              "name": "PlmnInfo:100-101|1-3",
+              "comments": "ManualDataSet-For-ESOA1185",
+              "status": "operating",
+              "versionNumber": 1,
+              "revisionGroupKey": {
+                "type": "revisionGroupKey",
+                "keyValue": 399
+              },
+              "sNSSAI_SST": 3,
+              "sNSSAI_SD": "1",
+              "key": {
+                "type": "ctw/plmninfoKey",
+                "keyValue": 81
+              }
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "supportingNetworkSliceSubnets": [
+    {
+      "mode": "LOADED",
+      "value": {
+        "type": "ctw/networkslicesubnet",
+        "id": 227,
+        "href": "ctw/networkslicesubnet/227",
+        "externalId": "NSSI-A1",
+        "name": "NetworkSliceSubnet:NSSI-A1",
+        "comments": "ManualDataSet-For-ESOA1185",
+        "_id": 1,
+        "revisionNumber": 1,
+        "createdOn": "2023-11-17T19:48:46.997Z",
+        "createdBy": "sysadm",
+        "status": "operating",
+        "lastModifiedOn": "2023-11-17T19:48:46.997Z",
+        "lastModifiedBy": "sysadm",
+        "versionNumber": 1,
+        "revisionGroupKey": {
+          "type": "revisionGroupKey",
+          "keyValue": 410
+        },
+        "key": {
+          "type": "ctw/networkslicesubnetKey",
+          "keyValue": 227
+        }
+      }
+    }
+  ]
+}

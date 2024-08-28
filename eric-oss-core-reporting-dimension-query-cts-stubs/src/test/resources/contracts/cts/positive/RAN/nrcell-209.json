@@ -1,0 +1,28 @@
+[
+  {
+    "type": "ctw/nrcell",
+    "id": 2009,
+    "href": "ctw/nrcell/2009",
+    "externalId": "SubNetwork=Europe,SubNetwork=Ireland,MeContext=gNodeB1,ManagedElement=gNodeB1,GNBDUFunction=1,NRCellDU=209",
+    "name": "NR01gNodeBRadio00013-3",
+    "createdOn": "2023-04-24T12:57:34.725Z",
+    "createdBy": "sysadm",
+    "status": "operating",
+    "lastModifiedOn": "2023-04-24T12:57:34.725Z",
+    "lastModifiedBy": "sysadm",
+    "versionNumber": 1,
+    "revisionNumber": 1,
+    "administrativeState": "UNLOCKED",
+    "operationalState": "DISABLED",
+    "revisionGroupKey": {
+      "type": "revisionGroupKey",
+      "keyValue": 26881
+    },
+    "localCellIdNci": 213031,
+    "trackingAreaCode": 999,
+    "key": {
+      "type": "ctw/nrcellKey",
+      "keyValue": 2009
+    }
+  }
+]

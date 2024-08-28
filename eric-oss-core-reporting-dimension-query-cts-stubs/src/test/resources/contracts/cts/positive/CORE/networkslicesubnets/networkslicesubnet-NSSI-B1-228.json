@@ -1,0 +1,58 @@
+{
+  "type": "ctw/networkslicesubnet",
+  "id": 228,
+  "href": "ctw/networkslicesubnet/228",
+  "externalId": "NSSI-B1",
+  "name": "NetworkSliceSubnet:NSSI-B1",
+  "comments": "ManualDataSet-For-ESOA1185",
+  "_id": 2,
+  "revisionNumber": 1,
+  "createdOn": "2023-11-17T19:48:47.007Z",
+  "createdBy": "sysadm",
+  "status": "operating",
+  "lastModifiedOn": "2023-11-17T19:48:47.007Z",
+  "lastModifiedBy": "sysadm",
+  "versionNumber": 1,
+  "revisionGroupKey": {
+    "type": "revisionGroupKey",
+    "keyValue": 411
+  },
+  "key": {
+    "type": "ctw/networkslicesubnetKey",
+    "keyValue": 228
+  },
+  "networkSlice": [
+    {
+      "mode": "LOADED",
+      "value": {
+        "type": "ctw/networkslice",
+        "id": 225,
+        "href": "ctw/networkslice/225",
+        "externalId": "NSI-B",
+        "name": "NetworkSlice:NSI-B",
+        "comments": "ManualDataSet-For-ESOA1185",
+        "_type": "1",
+        "maxNumberUE": 20,
+        "latency": 20,
+        "ueMobilityLevel": "Restricted Mobility",
+        "resourceSharingLevel": "Non-Shared",
+        "description": "eMBB/Restricted Mobility",
+        "revisionNumber": 1,
+        "createdOn": "2023-11-17T19:48:46.932Z",
+        "createdBy": "sysadm",
+        "status": "operating",
+        "lastModifiedOn": "2023-11-17T19:48:46.932Z",
+        "lastModifiedBy": "sysadm",
+        "versionNumber": 1,
+        "revisionGroupKey": {
+          "type": "revisionGroupKey",
+          "keyValue": 405
+        },
+        "key": {
+          "type": "ctw/networksliceKey",
+          "keyValue": 225
+        }
+      }
+    }
+  ]
+}

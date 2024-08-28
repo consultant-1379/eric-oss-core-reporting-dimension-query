@@ -1,0 +1,84 @@
+[
+  {
+    "type": "ctw/amf",
+    "id": 238,
+    "href": "ctw/amf/238",
+    "externalId": "PCC00012-AMF",
+    "name": "WirelessNetworkFunction:PCC00012-AMF",
+    "comments": "ManualDataSet-For-ESOA1185",
+    "revisionNumber": 1,
+    "createdOn": "2023-11-17T19:48:47.171Z",
+    "createdBy": "sysadm",
+    "status": "operating",
+    "lastModifiedOn": "2023-11-17T19:48:47.171Z",
+    "lastModifiedBy": "sysadm",
+    "revisionGroupKey": {
+      "type": "revisionGroupKey",
+      "keyValue": 428
+    },
+    "versionNumber": 1,
+    "key": {
+      "type": "ctw/amfKey",
+      "keyValue": 238
+    },
+    "geographicSite": [
+      {
+        "mode": "LOADED",
+        "value": {
+          "type": "ctg/geographicsite",
+          "id": 20,
+          "href": "ctg/geographicsite/20",
+          "externalId": "DataCenter2",
+          "status": "operating",
+          "lastModifiedOn": "2023-11-17T19:48:46.870Z",
+          "lastModifiedBy": "sysadm",
+          "name": "GeographicSite:DataCenter2",
+          "comments": "ManualDataSet-For-ESOA1185",
+          "createdOn": "2023-11-17T19:48:46.870Z",
+          "createdBy": "sysadm",
+          "siteId": "2",
+          "_type": "Data Center",
+          "revisionNumber": 1,
+          "versionNumber": 1,
+          "revisionGroupKey": {
+            "type": "revisionGroupKey",
+            "keyValue": 395
+          },
+          "key": {
+            "type": "ctg/geographicsiteKey",
+            "keyValue": 20
+          }
+        }
+      }
+    ],
+    "supportingNetSliceSubnets": [
+      {
+        "mode": "LOADED",
+        "value": {
+          "type": "ctw/networkslicesubnet",
+          "id": 234,
+          "href": "ctw/networkslicesubnet/234",
+          "externalId": "NSSI-C11",
+          "name": "NetworkSliceSubnet:NSSI-C11",
+          "comments": "ManualDataSet-For-ESOA1185",
+          "_id": 31,
+          "revisionNumber": 1,
+          "createdOn": "2023-11-17T19:48:47.049Z",
+          "createdBy": "sysadm",
+          "status": "operating",
+          "lastModifiedOn": "2023-11-17T19:48:47.049Z",
+          "lastModifiedBy": "sysadm",
+          "versionNumber": 1,
+          "revisionGroupKey": {
+            "type": "revisionGroupKey",
+            "keyValue": 417
+          },
+          "key": {
+            "type": "ctw/networkslicesubnetKey",
+            "keyValue": 234
+          }
+        }
+      }
+    ]
+  }
+]
